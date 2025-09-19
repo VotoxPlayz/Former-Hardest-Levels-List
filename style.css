@@ -101,7 +101,7 @@ nav a:hover {
     line-height: 1.6;
 }
 .welcome-text strong {
-    /* Retained for any other strong tags, but specific text bolding is in HTML */
+    color: var(--accent-color); /* Makes the bolded text green */
     font-weight: bold; 
 }
 
@@ -240,68 +240,6 @@ nav a:hover {
 .level-info-row p strong:after {
     content: " "; 
     white-space: pre;
-}
-
-/* --- TOOLTIP STYLING --- */
-.info-tooltip {
-    position: relative;
-    display: inline-block;
-    cursor: help;
-    margin-left: 5px; 
-}
-
-.tooltip-icon {
-    font-size: 0.9em;
-    color: var(--accent-color);
-    border: 1px solid var(--accent-color);
-    background-color: var(--main-panel-bg); 
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 1;
-    vertical-align: middle;
-}
-
-.tooltip-text {
-    visibility: hidden;
-    width: 200px;
-    background-color: var(--sidebar-bg);
-    color: var(--text-color);
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px;
-    position: absolute;
-    /* FIX: Ensure the text layer is high enough */
-    z-index: 100; 
-    bottom: 125%; 
-    left: 50%;
-    margin-left: -100px; 
-    opacity: 0;
-    transition: opacity 0.3s;
-    white-space: normal; 
-    pointer-events: none; /* Prevents the tooltip text from blocking hover trigger */
-}
-
-/* Tooltip Arrow */
-.tooltip-text::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: var(--sidebar-bg) transparent transparent transparent;
-}
-
-/* FIX: Ensure visibility and opacity transition on hover */
-.info-tooltip:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
 }
 
 
