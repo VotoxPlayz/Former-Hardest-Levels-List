@@ -101,14 +101,14 @@
                         <input type="text" id="level-id" placeholder="ID of the LDM/Bugfix if used">
                     </div>
 
-                    <div class="form-row">
-                        <label for="raw-footage">Raw Footage (Required for Top 15):</label>
+                    <div class="form-row" id="raw-footage-row">
+                        <label for="raw-footage">Raw Footage (Optional):</label>
                         <input type="url" id="raw-footage" placeholder="Link to your raw footage (Drive/Dropbox/etc.)">
                     </div>
 
                     <div class="form-row">
-                        <label for="enjoyment">Enjoyment (e.g. 7.5):</label>
-                        <input type="number" step="0.1" id="enjoyment" min="1" max="10" placeholder="e.g. 7.1, 6.0">
+                        <label for="enjoyment">Enjoyment (0.0-10.0):</label>
+                        <input type="number" step="0.1" id="enjoyment" min="0" max="10" placeholder="e.g. 7.1, 6.0">
                     </div>
 
                     <div class="form-row">
@@ -152,8 +152,7 @@
                     <li>**The LDM/Bugfix copy of a level has to, without a doubt, not make a significant difference in the level.** Minor graphical changes are fine, but any change that simplifies gameplay is forbidden.</li>
                     <li>**Your record can be valid if it ends midway through the endscreen, ONLY if it's impossible to die in the endscreen.** If the last possible point of death has passed, the record is acceptable.</li>
                     <li>**If your record is in the Top 15, you must submit raw footage, with split audio tracks in a downloadable format (e.g., Google Drive/Dropbox).** This is a mandatory measure for the hardest levels on the list.</li>
-                    <li>**Your record cannot contain any disallowed mods or cheats.** This includes the physics bypass.</li>
-                    <li>**Click Between Frames is allowed, but physics bypass is not.**</li>
+                    <li>**Your record cannot contain any disallowed mods or cheats; Click Between Frames (CBF) is allowed, but physics bypass is not.**</li>
                     <li>**During your completion, you cannot use skips that make the level significantly easier.** This includes major route deviations not intended by the creator.</li>
                 </ul>
                 <p class="staff-contact">For any questions regarding a submission, please contact the staff via Discord.</p>
@@ -181,7 +180,6 @@
 
             // Re-run initialization for page-specific elements
             if (pageId === 'leaderboard') {
-                // Render the first page of the leaderboard when the page is changed to it
                 renderLeaderboard(1);
             }
         }
