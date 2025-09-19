@@ -87,6 +87,7 @@ function displayLevelDetails(level) {
     const endscreenStatus = level.endscreenDeath === 'Possible' ? 'Possible' : 'Impossible';
     
     // A. Update Level Details (Center Column) - Includes new spacing and simplified info
+    // NOTE: Spacing is now handled in style.css to ensure single colon rendering.
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
         
