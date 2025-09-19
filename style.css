@@ -101,7 +101,8 @@ nav a:hover {
     line-height: 1.6;
 }
 .welcome-text strong {
-    color: var(--accent-color);
+    /* Retained for any other strong tags, but specific text bolding is in HTML */
+    font-weight: bold; 
 }
 
 .home-buttons button {
@@ -246,14 +247,14 @@ nav a:hover {
     position: relative;
     display: inline-block;
     cursor: help;
-    margin-left: 5px; /* Spacing after the value (Yes/No) */
+    margin-left: 5px; 
 }
 
 .tooltip-icon {
     font-size: 0.9em;
     color: var(--accent-color);
     border: 1px solid var(--accent-color);
-    background-color: var(--main-panel-bg); /* Add background for visibility */
+    background-color: var(--main-panel-bg); 
     border-radius: 50%;
     width: 16px;
     height: 16px;
@@ -273,14 +274,15 @@ nav a:hover {
     border-radius: 6px;
     padding: 8px;
     position: absolute;
-    /* FIX: Increased z-index so the tooltip appears above other elements */
-    z-index: 10; 
-    bottom: 125%; /* Position the tooltip above the icon */
+    /* FIX: Ensure the text layer is high enough */
+    z-index: 100; 
+    bottom: 125%; 
     left: 50%;
-    margin-left: -100px; /* Center the tooltip */
+    margin-left: -100px; 
     opacity: 0;
     transition: opacity 0.3s;
-    white-space: normal; /* Allow text wrapping */
+    white-space: normal; 
+    pointer-events: none; /* Prevents the tooltip text from blocking hover trigger */
 }
 
 /* Tooltip Arrow */
@@ -295,9 +297,11 @@ nav a:hover {
     border-color: var(--sidebar-bg) transparent transparent transparent;
 }
 
+/* FIX: Ensure visibility and opacity transition on hover */
 .info-tooltip:hover .tooltip-text {
     visibility: visible;
     opacity: 1;
+    pointer-events: auto;
 }
 
 
