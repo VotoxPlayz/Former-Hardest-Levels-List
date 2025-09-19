@@ -7,15 +7,15 @@
 
 const LEVEL_DATA = [
     {
-        name: "Acheron",
-        creator: "Renn241",
+        name: "Thinking Space II",
+        creator: "CairoX",
         verifier: "Zoink",
-        id: "87346124",
-        video: "https://www.youtube.com/watch?v=ACHERON_VIDEO_ID",
-        description: "The current hardest extreme demon.",
-        dateAsTop1: "2023-01-20", // Example date
-        endscreenDeath: "Possible (0-100% Death)", // New field
-        publisher: "Renn241" // Using 'creator' for design, 'publisher' for list data
+        id: "119544028",
+        video: "https://www.youtube.com/watch?v=CELNmHwln_c",
+        description: "A mindscape of pure insanity, most fall to its brutal nature. Gameplay by CoCy team, deco hosted by DrCuber, Verified by Zoink. Dedicated to Hideki <3",
+        dateAsTop1: "N/A", // Example date
+        endscreenDeath: "Yes", // New field
+        publisher: "CairoX" // Using 'creator' for design, 'publisher' for list data
     },
     {
         name: "Slaughterhouse",
