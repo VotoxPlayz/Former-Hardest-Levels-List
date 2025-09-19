@@ -137,42 +137,45 @@ nav a:hover {
     overflow-y: auto;
 }
 
-/* --- LEVEL LIST ITEMS (LEFT) - Styled as buttons --- */
+/* --- LEVEL LIST ITEMS (LEFT) - Styled as buttons (Fixed Layout) --- */
 .level-list-item {
     background-color: var(--main-panel-bg);
-    padding: 8px 10px; /* Adjusted padding */
+    padding: 8px 10px; 
     margin-bottom: 5px;
-    border: 1px solid var(--border-color); /* Added border */
+    border: 1px solid var(--border-color); 
     border-left: 4px solid transparent;
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Changed to column to stack rank/name and creator */
+    align-items: flex-start;
     font-size: 14px;
     transition: background-color 0.2s, border-left-color 0.2s, border-color 0.2s;
-    border-radius: 3px; /* Slightly rounded corners */
+    border-radius: 3px;
 }
 
 .level-list-item:hover, .level-list-item.active {
-    background-color: var(--border-color);
+    background-color: #353535; /* Slightly darker hover */
     border-left-color: var(--accent-color);
-    border-color: var(--accent-color); /* Highlight border on hover/active */
+    border-color: var(--accent-color);
 }
 
 .level-rank {
     font-weight: bold;
     color: var(--accent-color);
-    margin-right: 8px; /* Spacing */
+    margin-right: 8px; 
+    display: inline; /* Ensure rank and name are on the same line */
 }
 .level-name {
-    flex-grow: 1; /* Allows name to take available space */
     font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 3px;
 }
 .level-creator {
     font-size: 11px;
     color: #999;
-    margin-left: 8px; /* Spacing */
+    white-space: nowrap; /* Prevent "by Creator" from wrapping vertically */
 }
+
 
 .level-details {
     flex-grow: 1;
@@ -221,13 +224,16 @@ nav a:hover {
     gap: 20px;
     margin-bottom: 10px;
     font-size: 14px;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    flex-wrap: wrap; 
 }
-/* New layout for info rows */
+
 .level-info-row p {
-    flex: 1 1 30%; /* Approx three items per row, allows flex-grow */
+    flex: 1 1 30%; 
     display: flex;
     align-items: center;
+    white-space: nowrap; /* Prevent info titles/values from wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Tooltip for info */
@@ -244,11 +250,12 @@ nav a:hover {
     font-size: 10px;
     cursor: help;
     position: relative;
+    z-index: 5; /* Ensure tooltip is above other content */
 }
 .info-tooltip::before {
     content: attr(title);
     position: absolute;
-    bottom: 120%; /* Position above the element */
+    bottom: 120%; 
     left: 50%;
     transform: translateX(-50%);
     background-color: #333;
@@ -260,8 +267,8 @@ nav a:hover {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s, visibility 0.2s;
-    pointer-events: none; /* Allows click-through */
-    z-index: 1;
+    pointer-events: none; 
+    z-index: 10;
 }
 .info-tooltip:hover::before {
     opacity: 1;
@@ -272,7 +279,8 @@ nav a:hover {
 /* --- VICTOR LIST (RIGHT) - FIXED SPACING --- */
 .victor-header {
     display: grid;
-    grid-template-columns: 2fr 1.2fr 0.5fr; /* Adjusted for enjoyment in middle */
+    /* Name (2fr), Enjoyment (0.8fr, moved left), Video (0.5fr) */
+    grid-template-columns: 2fr 0.8fr 0.5fr; 
     font-weight: bold;
     margin-top: 10px;
     padding-bottom: 5px;
@@ -281,14 +289,15 @@ nav a:hover {
 .victor-item {
     padding: 5px 0;
     border-bottom: 1px dashed var(--border-color);
+    /* Name (2fr), Enjoyment (0.8fr, moved left), Video (0.5fr) */
     display: grid;
-    grid-template-columns: 2fr 1.2fr 0.5fr; /* Adjusted for enjoyment in middle */
+    grid-template-columns: 2fr 0.8fr 0.5fr; 
     align-items: center;
     font-size: 14px;
 }
 
 .center-text {
-    text-align: center;
+    text-align: center; /* This centers the enjoyment text within its smaller grid column */
 }
 .right-text {
     text-align: right;
