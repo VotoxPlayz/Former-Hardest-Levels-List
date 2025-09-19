@@ -3,38 +3,46 @@
 // --- 1. CONFIGURATION ---
 const PLAYERS_PER_PAGE = 50;
 
-// --- 2. POINT CALCULATION LOGIC ---
+// --- 2. CORE UTILITY FUNCTIONS ---
 
 // Function to calculate the exponential points
 function calculatePoints(rank, totalLevels) {
-    // Rank 1 gets 500 points, Rank 55 gets 1 point.
     const maxPoints = 500;
     const minPoints = 1;
-
-    // Normalize rank (1 is highest, totalLevels is lowest)
     const normalizedRank = totalLevels - rank + 1;
-
-    // Exponential scaling (exponent 2.5 for a steeper curve)
     const exponent = 2.5;
     const scaledPoints = (maxPoints - minPoints) * Math.pow(((totalLevels - rank) / (totalLevels - 1)), exponent) + minPoints;
-    
-    // Round to the nearest integer
     return Math.round(scaledPoints);
+}
+
+// Function to calculate the mean enjoyment from victors (ignoring N/A)
+function calculateMeanEnjoyment(levelName) {
+    const validEnjoyments = VICTOR_COMPLETIONS
+        .filter(v => v.level === levelName && v.enjoyment !== null && v.enjoyment !== undefined && !isNaN(parseFloat(v.enjoyment)))
+        .map(v => parseFloat(v.enjoyment));
+
+    if (validEnjoyments.length === 0) {
+        return "N/A";
+    }
+
+    const sum = validEnjoyments.reduce((acc, val) => acc + val, 0);
+    return (sum / validEnjoyments.length).toFixed(2);
 }
 
 // --- 3. DATA PROCESSING AND RENDERING ---
 
 let processedLevels = [];
-let currentPage = 1; // For leaderboard pagination
+let currentPage = 1;
 
 function initializeList() {
     const totalLevels = LEVEL_DATA.length;
 
-    // 1. Calculate points for each level and store them
+    // 1. Calculate points for each level and store them, including mean enjoyment
     processedLevels = LEVEL_DATA.map((level, index) => {
         const rank = index + 1;
         const points = calculatePoints(rank, totalLevels);
-        return { ...level, rank, points };
+        const meanEnjoyment = calculateMeanEnjoyment(level.name);
+        return { ...level, rank, points, enjoyment: meanEnjoyment };
     });
 
     // 2. Build the main level list sidebar
@@ -53,6 +61,7 @@ function renderLevelList() {
         const listItem = document.createElement('div');
         listItem.className = 'level-list-item';
         listItem.dataset.levelName = level.name;
+        // Revert: Change list items back to styled buttons/boxes (achieved via CSS/HTML structure)
         listItem.innerHTML = `
             <span class="level-rank">#${level.rank}</span>
             <span class="level-name">${level.name}</span>
@@ -74,11 +83,11 @@ function displayLevelDetails(level) {
 
     if (!detailsContainer || !victorsContainer) return;
 
-    // A. Update Level Details (Center Column) - NEW LAYOUT
+    // A. Update Level Details (Center Column) - New Info Layout
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
         
-        <p class="level-description">${level.description}</p>
+        <p class="level-description">**${level.description}**</p>
 
         <div class="video-placeholder">
             <iframe src="${level.video.replace('watch?v=', 'embed/').split('&')[0]}" frameborder="0" allowfullscreen></iframe>
@@ -86,19 +95,19 @@ function displayLevelDetails(level) {
         
         <div class="level-info-row top-row">
             <p><strong>Level ID:</strong> ${level.id}</p>
+            <p><strong>Publisher:</strong> ${level.publisher}</p>
             <p><strong>FHLL Points:</strong> ${level.points}</p>
-            <p><strong>Average Enjoyment:</strong> ${level.enjoyment}</p>
         </div>
         <div class="level-info-row bottom-row">
-            <p><strong>Publisher:</strong> ${level.creator}</p>
+            <p><strong>Average Enjoyment:</strong> ${level.enjoyment}</p>
             <p><strong>Top 1 Date:</strong> ${level.dateAsTop1}</p>
+            <p><strong>Endscreen Death:</strong> ${level.endscreenDeath}</p>
         </div>
     `;
 
     // B. Update Victors List (Right Column)
     const levelVictors = VICTOR_COMPLETIONS.filter(v => v.level === level.name)
                                            .sort((a, b) => {
-                                                // Sort by date if available, or just enjoyment if needed
                                                 if (a.date && b.date) {
                                                     return new Date(a.date) - new Date(b.date);
                                                 }
@@ -120,7 +129,7 @@ function displayLevelDetails(level) {
         // Note: enjoyment is validated in the submit form, but here we expect a string like "7.5"
         victorItem.innerHTML = `
             <span class="victor-name">${victor.player}</span>
-            <span class="victor-enjoyment center-text">${victor.enjoyment || '?'}</span>
+            <span class="victor-enjoyment center-text">${victor.enjoyment || 'N/A'}</span>
             <a href="${victor.video}" target="_blank" class="victor-video-link right-text">▶️</a>
         `;
         victorsContainer.appendChild(victorItem);
@@ -174,7 +183,6 @@ function calculateLeaderboard() {
     calculatedLeaderboard = leaderboard;
 }
 
-
 function renderLeaderboard(page = 1) {
     if (calculatedLeaderboard.length === 0) {
         calculateLeaderboard();
@@ -191,7 +199,7 @@ function renderLeaderboard(page = 1) {
     const totalPlayers = calculatedLeaderboard.length;
     const totalPages = Math.ceil(totalPlayers / PLAYERS_PER_PAGE);
     const start = (page - 1) * PLAYERS_PER_PAGE;
-    const end = start + PLAYERS_PER_PAGE;
+    const end = start + PLAYERS_PERPAGES;
 
     const playersToShow = calculatedLeaderboard.slice(start, end);
 
@@ -218,9 +226,13 @@ function renderLeaderboard(page = 1) {
 }
 
 
-// --- 5. SUBMIT PAGE SETUP ---
+// --- 5. SUBMIT PAGE SETUP AND LOGIC ---
 function setupSubmitPage() {
     const levelSelect = document.getElementById('submit-level-select');
+    const rawFootageRow = document.getElementById('raw-footage-row');
+    const rawFootageInput = document.getElementById('raw-footage');
+    const rawFootageLabel = document.querySelector('label[for="raw-footage"]');
+
     if (!levelSelect) return;
 
     // Populate the dropdown with levels from the list
@@ -228,18 +240,49 @@ function setupSubmitPage() {
         const option = document.createElement('option');
         option.value = level.name;
         option.textContent = `#${level.rank} - ${level.name}`;
+        option.dataset.rank = level.rank;
         levelSelect.appendChild(option);
     });
+
+    // Event listener for conditional raw footage requirement
+    levelSelect.addEventListener('change', () => {
+        const selectedOption = levelSelect.options[levelSelect.selectedIndex];
+        const rank = parseInt(selectedOption.dataset.rank);
+        
+        // Raw footage required for Top 15
+        const isTop15 = rank > 0 && rank <= 15;
+
+        if (isTop15) {
+            rawFootageLabel.innerHTML = 'Raw Footage: <span class="required-asterisk">*</span>';
+            rawFootageInput.required = true;
+        } else {
+            rawFootageLabel.innerHTML = 'Raw Footage (Optional):';
+            rawFootageInput.required = false;
+        }
+    });
+    
+    // Initial check (in case Acheron is default selected)
+    levelSelect.dispatchEvent(new Event('change'));
 
     // Setup enjoyment input change listener for decimal enforcement
     const enjoymentInput = document.getElementById('enjoyment');
     enjoymentInput.addEventListener('change', (e) => {
         const value = e.target.value;
-        if (value && value.indexOf('.') === -1) {
-            e.target.value = parseFloat(value).toFixed(1);
-        } else if (value && (value.split('.')[1] || '').length > 1) {
-             e.target.value = parseFloat(value).toFixed(1);
+        const floatValue = parseFloat(value);
+
+        if (value === "") {
+            // Allow empty string if not required
+            return; 
         }
+
+        if (isNaN(floatValue) || floatValue < 0 || floatValue > 10) {
+             alert("Enjoyment must be a number between 0.0 and 10.0.");
+             e.target.value = "";
+             return;
+        }
+
+        // Enforce X.X format
+        e.target.value = floatValue.toFixed(1);
     });
 
     // Setup submission form handler (currently just an alert)
