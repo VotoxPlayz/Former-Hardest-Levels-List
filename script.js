@@ -83,8 +83,7 @@ function displayLevelDetails(level) {
 
     if (!detailsContainer || !victorsContainer) return;
 
-    // A. Update Level Details (Center Column) - New Info Layout
-    // Replaced `**text**` with <strong>text</strong> for consistent bolding
+    // A. Update Level Details (Center Column)
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
         
@@ -101,8 +100,8 @@ function displayLevelDetails(level) {
         </div>
         <div class="level-info-row bottom-row">
             <p><strong>Average Enjoyment:</strong> ${level.enjoyment}</p>
-            <p><strong>Top 1 Date:</strong> ${level.dateAsTop1} <span class="info-tooltip" title="Date this level was considered the hardest level.">?</span></p>
-            <p><strong>Endscreen Death:</strong> ${level.endscreenDeath} <span class="info-tooltip" title="Is it possible to die in the endscreen of this level?">?</span></p>
+            <p><strong>Top 1 Date:</strong> ${level.dateAsTop1} <span class="info-tooltip" title="The date this level was considered the hardest level.">?</span></p>
+            <p><strong>Endscreen Death:</strong> ${level.endscreenDeath} <span class="info-tooltip" title="It is possible to die in the endscreen of this level.">?</span></p>
         </div>
     `;
 
@@ -144,6 +143,7 @@ function calculateLeaderboard() {
     const playerScores = {}; 
 
     VICTOR_COMPLETIONS.forEach(completion => {
+        // Need to ensure processedLevels has data before using it!
         const level = processedLevels.find(l => l.name === completion.level);
         if (!level) return;
 
@@ -184,6 +184,11 @@ function calculateLeaderboard() {
 }
 
 function renderLeaderboard(page = 1) {
+    // Re-run initialization if the list is empty (fixes initial load issue on leaderboard page)
+    if (processedLevels.length === 0) {
+        initializeList();
+    }
+    
     // Ensure leaderboard is calculated before rendering
     if (calculatedLeaderboard.length === 0) {
         calculateLeaderboard();
@@ -200,7 +205,7 @@ function renderLeaderboard(page = 1) {
     const totalPlayers = calculatedLeaderboard.length;
     const totalPages = Math.ceil(totalPlayers / PLAYERS_PER_PAGE);
     const start = (page - 1) * PLAYERS_PER_PAGE;
-    const end = start + PLAYERS_PER_PAGE; // Fixed typo 'PERPAGES' to 'PER_PAGE'
+    const end = start + PLAYERS_PER_PAGE;
 
     const playersToShow = calculatedLeaderboard.slice(start, end);
 
@@ -262,7 +267,6 @@ function setupSubmitPage() {
     });
     
     // Initial check (in case Acheron is default selected, or no level selected)
-    // Dispatch change event to set initial raw footage requirement
     levelSelect.dispatchEvent(new Event('change'));
 
     // Setup enjoyment input change listener for decimal enforcement
