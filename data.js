@@ -18,38 +18,49 @@ const LEVEL_DATA = [
         publisher: "CairoX" // Using 'creator' for design, 'publisher' for list data
     },
     {
-        name: "Slaughterhouse",
-        creator: "RazorBlade",
-        verifier: "Greg",
-        id: "77777777",
-        video: "https://www.youtube.com/watch?v=SLAUGHTERHOUSE_VIDEO_ID",
-        description: "A very long and intense silent-style extreme demon.",
-        dateAsTop1: "2021-08-15",
-        endscreenDeath: "Not Possible (Safe)",
-        publisher: "RazorBlade"
+        name: "Tidal Wave buffed",
+        creator: "OniLinkGD",
+        verifier: "wPopoff",
+        id: "116732736",
+        video: "https://m.youtube.com/watch?v=1-ihSeRCpds",
+        description: "April fools but real!",
+        dateAsTop1: "N/A",
+        endscreenDeath: "Yes",
+        publisher: "wPopoff"
     },
     {
-        name: "Tartarus",
-        creator: "Dolphy",
-        verifier: "EOL",
-        id: "60000000",
-        video: "https://www.youtube.com/watch?v=TARTARUS_VIDEO_ID",
-        description: "The former hardest that defined a generation.",
-        dateAsTop1: "2019-12-11",
-        endscreenDeath: "Not Possible (Safe)",
-        publisher: "Dolphy"
+        name: "Tidal Wave",
+        creator: "OniLinkGD",
+        verifier: "Zoink",
+        id: "86407629",
+        video: "https://youtu.be/9fsZ014qB3s?si=PrZssw-Ly_4KvLZ0&t=2",
+        description: "Drown them",
+        dateAsTop1: "2024-02-18",
+        endscreenDeath: "Yes",
+        publisher: "OniLinkGD"
     },
     {
-        name: "Bloodbath",
-        creator: "Asonicmen",
-        verifier: "Riot",
-        id: "10565866",
-        video: "https://www.youtube.com/watch?v=BLOODBATH_VIDEO_ID",
-        description: "The legendary former hardest.",
-        dateAsTop1: "2015-05-18",
-        endscreenDeath: "Not Possible (Safe)",
-        publisher: "Asonicmen"
-    }
+        name: "Silent clubstep",
+        creator: "TheRealSailent",
+        verifier: "Paqoe",
+        id: "4125776",
+        video: "https://youtu.be/GR4OMkS3SN8?si=-4h_hz6ZhiLdISka&t=4",
+        description: "7 years and you still play me?!",
+        dateAsTop1: "N/A",
+        endscreenDeath: "No",
+        publisher: "TheRealSailent"
+    },
+    {
+        name: "Avernus",
+        creator: "PockeWindfish",
+        verifier: "Zoink",
+        id: "89496627",
+        video: "https://youtu.be/16Zh8jssanc",
+        description: "By Bo & Kyhros - https://discord.gg/YcNkfHMJGv",
+        dateAsTop1: "2023-10-16",
+        endscreenDeath: "Yes",
+        publisher: "OniLinkGD"
+    },
     // ... You will add the other 51 former hardest levels here ...
 ];
 
@@ -59,13 +70,7 @@ const LEVEL_DATA = [
 
 const VICTOR_COMPLETIONS = [
     // Format: { player: "USERNAME", level: "LEVEL NAME", date: "YYYY-MM-DD", video: "YOUTUBE_LINK", enjoyment: "X.X" }
-    { player: "Zoink", level: "Acheron", date: "2023-01-20", video: "https://www.youtube.com/watch?v=ZOINK_ACHERON", enjoyment: "9.5" },
-    { player: "PlayerA", level: "Acheron", date: "2023-05-10", video: "https://www.youtube.com/watch?v=A_ACHERON", enjoyment: "8.8" },
-    { player: "PlayerB", level: "Slaughterhouse", date: "2021-12-01", video: "https://www.youtube.com/watch?v=B_SH", enjoyment: "7.9" },
-    { player: "Zoink", level: "Slaughterhouse", date: "2021-09-01", video: "https://www.youtube.com/watch?v=ZOINK_SH", enjoyment: "9.1" },
-    { player: "PlayerC", level: "Tartarus", date: "2020-03-20", video: "https://www.youtube.com/watch?v=C_TARTARUS", enjoyment: "6.0" },
-    { player: "PlayerB", level: "Tartarus", date: "2020-05-25", video: "https://www.youtube.com/watch?v=B_TARTARUS", enjoyment: "7.5" },
-    { player: "Riot", level: "Bloodbath", date: "2015-05-18", video: "https://www.youtube.com/watch?v=RIOT_BB", enjoyment: "9.8" },
-    { player: "Rando", level: "Bloodbath", date: "2015-05-18", video: "https://www.youtube.com/watch?v=Rando_BB", enjoyment: null }, // N/A enjoyment
+    { player: "NO", level: "no", date: "2023-01-20", video: "https://www.youtube.com/watch?v=ZOINK_ACHERON", enjoyment: "9.5" },
+    // N/A enjoyment
     // ... Add all other victor completions here ...
 ];
