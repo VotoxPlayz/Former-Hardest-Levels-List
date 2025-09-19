@@ -86,8 +86,7 @@ function displayLevelDetails(level) {
     // Determine simplified endscreen death status
     const endscreenStatus = level.endscreenDeath === 'Possible' ? 'Possible' : 'Impossible';
     
-    // A. Update Level Details (Center Column) - Includes new spacing and simplified info
-    // NOTE: Spacing is now handled in style.css to ensure single colon rendering.
+    // A. Update Level Details (Center Column) - Renamed Enjoyment
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
         
@@ -103,13 +102,13 @@ function displayLevelDetails(level) {
             <p><strong>FHLL Points:</strong> ${level.points}</p>
         </div>
         <div class="level-info-row bottom-row">
-            <p><strong>Average Enjoyment:</strong> ${level.enjoyment}</p>
+            <p><strong>GDDL Enjoyment:</strong> ${level.enjoyment}</p>
             <p><strong>Top 1 Date:</strong> ${level.dateAsTop1}</p>
             <p><strong>Endscreen Death:</strong> ${endscreenStatus}</p>
         </div>
     `;
 
-    // B. Update Victors List (Right Column)
+    // B. Update Victors List (Right Column) - Enjoyment column removed
     const levelVictors = VICTOR_COMPLETIONS.filter(v => v.level === level.name)
                                            .sort((a, b) => {
                                                 if (a.date && b.date) {
@@ -120,20 +119,18 @@ function displayLevelDetails(level) {
 
     victorsContainer.innerHTML = `
         <h3>Victors (${levelVictors.length})</h3>
-        <div class="victor-header">
+        <div class="victor-header-no-enjoyment">
             <span>Name:</span>
-            <span class="center-text">Enjoyment:</span>
             <span class="right-text">Video:</span>
         </div>
     `;
 
     levelVictors.forEach(victor => {
         const victorItem = document.createElement('div');
-        victorItem.className = 'victor-item';
-        // The 'center-text' class handles the alignment of enjoyment
+        // Use a new class for the victor item grid structure
+        victorItem.className = 'victor-item-no-enjoyment'; 
         victorItem.innerHTML = `
             <span class="victor-name">${victor.player}</span>
-            <span class="victor-enjoyment center-text">${victor.enjoyment || 'N/A'}</span>
             <a href="${victor.video}" target="_blank" class="victor-video-link right-text">▶️</a>
         `;
         victorsContainer.appendChild(victorItem);
