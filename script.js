@@ -1,6 +1,9 @@
 // script.js
 
-// --- 1. POINT CALCULATION LOGIC ---
+// --- 1. CONFIGURATION ---
+const PLAYERS_PER_PAGE = 50;
+
+// --- 2. POINT CALCULATION LOGIC ---
 
 // Function to calculate the exponential points
 function calculatePoints(rank, totalLevels) {
@@ -19,9 +22,10 @@ function calculatePoints(rank, totalLevels) {
     return Math.round(scaledPoints);
 }
 
-// --- 2. DATA PROCESSING AND RENDERING ---
+// --- 3. DATA PROCESSING AND RENDERING ---
 
 let processedLevels = [];
+let currentPage = 1; // For leaderboard pagination
 
 function initializeList() {
     const totalLevels = LEVEL_DATA.length;
@@ -36,8 +40,7 @@ function initializeList() {
     // 2. Build the main level list sidebar
     renderLevelList();
 
-    // 3. Calculate and display the leaderboard (called when leaderboard page is active)
-    // 4. Initial content setup for the Submit Page
+    // 3. Initial content setup for the Submit Page
     setupSubmitPage();
 }
 
@@ -71,7 +74,7 @@ function displayLevelDetails(level) {
 
     if (!detailsContainer || !victorsContainer) return;
 
-    // A. Update Level Details (Center Column) - Matching the new sketch
+    // A. Update Level Details (Center Column) - NEW LAYOUT
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
         
@@ -81,12 +84,12 @@ function displayLevelDetails(level) {
             <iframe src="${level.video.replace('watch?v=', 'embed/').split('&')[0]}" frameborder="0" allowfullscreen></iframe>
         </div>
         
-        <div class="level-info-row">
+        <div class="level-info-row top-row">
             <p><strong>Level ID:</strong> ${level.id}</p>
             <p><strong>FHLL Points:</strong> ${level.points}</p>
             <p><strong>Average Enjoyment:</strong> ${level.enjoyment}</p>
         </div>
-        <div class="level-info-row">
+        <div class="level-info-row bottom-row">
             <p><strong>Publisher:</strong> ${level.creator}</p>
             <p><strong>Top 1 Date:</strong> ${level.dateAsTop1}</p>
         </div>
@@ -106,28 +109,30 @@ function displayLevelDetails(level) {
         <h3>Victors (${levelVictors.length})</h3>
         <div class="victor-header">
             <span>Name:</span>
-            <span>Enjoyment:</span>
-            <span>Video:</span>
+            <span class="center-text">Enjoyment:</span>
+            <span class="right-text">Video:</span>
         </div>
     `;
 
     levelVictors.forEach(victor => {
         const victorItem = document.createElement('div');
         victorItem.className = 'victor-item';
+        // Note: enjoyment is validated in the submit form, but here we expect a string like "7.5"
         victorItem.innerHTML = `
             <span class="victor-name">${victor.player}</span>
-            <span class="victor-enjoyment">${victor.enjoyment || '?'}</span>
-            <a href="${victor.video}" target="_blank" class="victor-video-link">▶️</a>
+            <span class="victor-enjoyment center-text">${victor.enjoyment || '?'}</span>
+            <a href="${victor.video}" target="_blank" class="victor-video-link right-text">▶️</a>
         `;
         victorsContainer.appendChild(victorItem);
     });
 }
 
-// --- 3. LEADERBOARD CALCULATION AND RENDERING ---
+// --- 4. LEADERBOARD CALCULATION AND RENDERING ---
 
-function renderLeaderboard() {
-    // 1. Calculate total points, wins, and hardest level for each player
-    const playerScores = {}; // { "PlayerName": { points: N, levelsBeaten: Set<LevelName>, hardestLevel: { name: "", points: 0 } } }
+let calculatedLeaderboard = [];
+
+function calculateLeaderboard() {
+    const playerScores = {}; 
 
     VICTOR_COMPLETIONS.forEach(completion => {
         const level = processedLevels.find(l => l.name === completion.level);
@@ -143,19 +148,14 @@ function renderLeaderboard() {
             };
         }
 
-        // Add points
         playerScores[player].points += level.points;
-
-        // Track level beaten (using Set prevents double counting if we allowed multiple entries for one player on one level)
         playerScores[player].levelsBeaten.add(level.name);
 
-        // Determine hardest level (based on highest point value)
         if (level.points > playerScores[player].hardestLevel.points) {
             playerScores[player].hardestLevel = { name: level.name, points: level.points };
         }
     });
 
-    // 2. Convert object to array and sort
     let leaderboard = Object.keys(playerScores).map(player => ({
         username: player,
         points: playerScores[player].points,
@@ -166,29 +166,59 @@ function renderLeaderboard() {
     // Sort by: 1. Points (descending), 2. Hardest Level Points (descending)
     leaderboard.sort((a, b) => {
         if (b.points !== a.points) {
-            return b.points - a.points; // Primary sort: Total Points
+            return b.points - a.points; 
         }
-        return b.hardestLevel.points - a.hardestLevel.points; // Secondary sort: Hardest Level Points
+        return b.hardestLevel.points - a.hardestLevel.points; 
     });
 
-    // 3. Render the leaderboard table
+    calculatedLeaderboard = leaderboard;
+}
+
+
+function renderLeaderboard(page = 1) {
+    if (calculatedLeaderboard.length === 0) {
+        calculateLeaderboard();
+    }
+    
+    currentPage = page;
     const leaderboardBody = document.getElementById('leaderboard-body');
-    if (!leaderboardBody) return;
+    const paginationControls = document.getElementById('leaderboard-pagination');
+    if (!leaderboardBody || !paginationControls) return;
 
     leaderboardBody.innerHTML = '';
-    leaderboard.forEach((player, index) => {
+    paginationControls.innerHTML = '';
+
+    const totalPlayers = calculatedLeaderboard.length;
+    const totalPages = Math.ceil(totalPlayers / PLAYERS_PER_PAGE);
+    const start = (page - 1) * PLAYERS_PER_PAGE;
+    const end = start + PLAYERS_PER_PAGE;
+
+    const playersToShow = calculatedLeaderboard.slice(start, end);
+
+    playersToShow.forEach((player, index) => {
+        const globalRank = start + index + 1;
         const row = leaderboardBody.insertRow();
         row.innerHTML = `
-            <td>#${index + 1}</td>
+            <td>#${globalRank}</td>
             <td>${player.username}</td>
             <td>${player.points}</td>
             <td>${player.hardestLevel.name}</td>
             <td>${player.levelsBeaten}</td>
         `;
     });
+
+    // Render Pagination Controls
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        btn.className = (i === currentPage ? 'active' : '');
+        btn.onclick = () => renderLeaderboard(i);
+        paginationControls.appendChild(btn);
+    }
 }
 
-// --- 4. SUBMIT PAGE SETUP ---
+
+// --- 5. SUBMIT PAGE SETUP ---
 function setupSubmitPage() {
     const levelSelect = document.getElementById('submit-level-select');
     if (!levelSelect) return;
@@ -200,7 +230,27 @@ function setupSubmitPage() {
         option.textContent = `#${level.rank} - ${level.name}`;
         levelSelect.appendChild(option);
     });
+
+    // Setup enjoyment input change listener for decimal enforcement
+    const enjoymentInput = document.getElementById('enjoyment');
+    enjoymentInput.addEventListener('change', (e) => {
+        const value = e.target.value;
+        if (value && value.indexOf('.') === -1) {
+            e.target.value = parseFloat(value).toFixed(1);
+        } else if (value && (value.split('.')[1] || '').length > 1) {
+             e.target.value = parseFloat(value).toFixed(1);
+        }
+    });
+
+    // Setup submission form handler (currently just an alert)
+    const submitForm = document.querySelector('.submission-form');
+    submitForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert("Submission captured! In a live site, this data would be sent to a backend/spreadsheet for review.");
+        // You would typically collect form data here and send it off.
+    });
 }
+
 
 // Ensure the initialize function runs once the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', initializeList);
