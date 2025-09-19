@@ -241,18 +241,19 @@ nav a:hover {
     white-space: pre;
 }
 
-/* --- TOOLTIP STYLING (NEW) --- */
+/* --- TOOLTIP STYLING --- */
 .info-tooltip {
     position: relative;
     display: inline-block;
     cursor: help;
-    margin-right: 5px;
+    margin-left: 5px; /* Spacing after the value (Yes/No) */
 }
 
 .tooltip-icon {
     font-size: 0.9em;
     color: var(--accent-color);
     border: 1px solid var(--accent-color);
+    background-color: var(--main-panel-bg); /* Add background for visibility */
     border-radius: 50%;
     width: 16px;
     height: 16px;
@@ -272,7 +273,8 @@ nav a:hover {
     border-radius: 6px;
     padding: 8px;
     position: absolute;
-    z-index: 1;
+    /* FIX: Increased z-index so the tooltip appears above other elements */
+    z-index: 10; 
     bottom: 125%; /* Position the tooltip above the icon */
     left: 50%;
     margin-left: -100px; /* Center the tooltip */
