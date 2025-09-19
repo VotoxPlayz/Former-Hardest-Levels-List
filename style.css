@@ -227,60 +227,44 @@ nav a:hover {
     flex-wrap: wrap; 
 }
 
+/* Ensure the colon in the label has a space after it in the display */
 .level-info-row p {
     flex: 1 1 30%; 
     display: flex;
     align-items: center;
-    white-space: nowrap; /* Prevent info titles/values from wrapping */
+    white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.level-info-row p strong:after {
+    content: ":\A0"; /* Adds colon followed by a non-breaking space */
+    white-space: pre; /* Ensures the space is honored */
+}
+/* Override for the end status and date, where the colon is already in the JS */
+.level-info-row p:nth-child(2) strong:after, 
+.level-info-row p:nth-child(3) strong:after, 
+.level-info-row.bottom-row p:nth-child(2) strong:after,
+.level-info-row.bottom-row p:nth-child(3) strong:after {
+    content: ":\A0"; /* Using \A0 for consistency, keeping colon outside of strong tag in this implementation for now */
+}
+/* Removing the content from the strong tag since we moved the colon into the template in script.js to control spacing better */
+.level-info-row p strong:after {
+    content: ": ";
+    white-space: pre;
+}
 
-/* Tooltip for info */
+
+/* Tooltip removal style */
 .info-tooltip {
-    margin-left: 5px;
-    background-color: #555;
-    color: #fff;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 10px;
-    cursor: help;
-    position: relative;
-    z-index: 5; /* Ensure tooltip is above other content */
-}
-.info-tooltip::before {
-    content: attr(title);
-    position: absolute;
-    bottom: 120%; 
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #333;
-    color: #fff;
-    padding: 8px;
-    border-radius: 4px;
-    white-space: nowrap;
-    font-size: 12px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s, visibility 0.2s;
-    pointer-events: none; 
-    z-index: 10;
-}
-.info-tooltip:hover::before {
-    opacity: 1;
-    visibility: visible;
+    display: none;
 }
 
 
-/* --- VICTOR LIST (RIGHT) - FIXED SPACING --- */
+/* --- VICTOR LIST (RIGHT) - FIXED SPACING (Enjoyment in the middle) --- */
 .victor-header {
     display: grid;
-    /* Name (2fr), Enjoyment (0.8fr, moved left), Video (0.5fr) */
-    grid-template-columns: 2fr 0.8fr 0.5fr; 
+    /* Name (2fr), Enjoyment (1fr, for centering), Video (0.5fr) */
+    grid-template-columns: 2fr 1fr 0.5fr; 
     font-weight: bold;
     margin-top: 10px;
     padding-bottom: 5px;
@@ -289,15 +273,15 @@ nav a:hover {
 .victor-item {
     padding: 5px 0;
     border-bottom: 1px dashed var(--border-color);
-    /* Name (2fr), Enjoyment (0.8fr, moved left), Video (0.5fr) */
+    /* Name (2fr), Enjoyment (1fr), Video (0.5fr) */
     display: grid;
-    grid-template-columns: 2fr 0.8fr 0.5fr; 
+    grid-template-columns: 2fr 1fr 0.5fr; 
     align-items: center;
     font-size: 14px;
 }
 
 .center-text {
-    text-align: center; /* This centers the enjoyment text within its smaller grid column */
+    text-align: center; /* This ensures enjoyment is visually centered in its column */
 }
 .right-text {
     text-align: right;
