@@ -83,10 +83,12 @@ function displayLevelDetails(level) {
 
     if (!detailsContainer || !victorsContainer) return;
 
-    // Determine simplified endscreen death status
-    const endscreenStatus = level.endscreenDeath === 'Possible' ? 'Possible' : 'Impossible';
+    // Determine simplified endscreen death status:
+    // If 'Possible', it means the endscreen is NOT safe (i.e., NO to "Safe Endscreen").
+    // If 'Impossible', it means the endscreen IS safe (i.e., YES to "Safe Endscreen").
+    const endscreenStatusValue = level.endscreenDeath === 'Possible' ? 'No' : 'Yes';
     
-    // A. Update Level Details (Center Column) - Renamed Enjoyment
+    // A. Update Level Details (Center Column) - New "Safe Endscreen" and tooltip
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
         
@@ -104,7 +106,14 @@ function displayLevelDetails(level) {
         <div class="level-info-row bottom-row">
             <p><strong>GDDL Enjoyment:</strong> ${level.enjoyment}</p>
             <p><strong>Top 1 Date:</strong> ${level.dateAsTop1}</p>
-            <p><strong>Endscreen Death:</strong> ${endscreenStatus}</p>
+            <p>
+                <strong>Safe Endscreen:</strong> 
+                <span class="info-tooltip">
+                    <span class="tooltip-icon">?</span>
+                    <span class="tooltip-text">A "Yes" value confirms it is IMPOSSIBLE to die during the endscreen.</span>
+                </span>
+                ${endscreenStatusValue}
+            </p>
         </div>
     `;
 
