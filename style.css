@@ -4,9 +4,11 @@
     --bg-color: #1a1a1a;
     --text-color: #f0f0f0;
     --accent-color: #00d463; /* Geometry Dash Green */
+    --submit-button-color: #00d463; /* New green for submit button */
     --main-panel-bg: #2b2b2b;
     --sidebar-bg: #222222;
     --border-color: #383838;
+    --error-color: #d40000;
 }
 
 * {
@@ -67,7 +69,7 @@ nav a:hover {
     display: none !important;
 }
 
-/* --- HOME PAGE CENTERING --- */
+/* --- HOME PAGE CENTERING & BOX --- */
 .centered-page {
     text-align: center;
     display: flex;
@@ -77,17 +79,27 @@ nav a:hover {
     min-height: calc(100vh - 70px);
 }
 
+.welcome-box {
+    padding: 40px;
+    border: 3px solid var(--accent-color);
+    background-color: var(--main-panel-bg);
+    box-shadow: 0 0 15px rgba(0, 212, 99, 0.3);
+    border-radius: 8px;
+    max-width: 800px;
+}
+
 .welcome-title {
     color: var(--accent-color);
     font-size: 3em;
     margin-bottom: 20px;
-    text-shadow: 0 0 10px rgba(0, 212, 99, 0.4);
 }
 
 .welcome-text {
-    max-width: 700px;
     margin-bottom: 30px;
     line-height: 1.6;
+}
+.welcome-text strong {
+    color: var(--accent-color);
 }
 
 .home-buttons button {
@@ -135,36 +147,7 @@ nav a:hover {
     width: 250px;
 }
 
-/* --- LEVEL LIST ITEMS (LEFT) --- */
-.level-list-item {
-    background-color: var(--main-panel-bg);
-    padding: 8px;
-    margin-bottom: 5px;
-    border-left: 4px solid transparent;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    transition: background-color 0.2s, border-left-color 0.2s;
-}
-
-.level-list-item:hover, .level-list-item.active {
-    background-color: var(--border-color);
-    border-left-color: var(--accent-color);
-}
-
-.level-rank {
-    font-weight: bold;
-    color: var(--accent-color);
-    margin-right: 5px;
-}
-.level-creator {
-    font-size: 11px;
-    color: #999;
-}
-
-/* --- LEVEL DETAILS (CENTER) - NEW LAYOUT --- */
+/* --- LEVEL DETAILS (CENTER) --- */
 .level-title {
     color: var(--accent-color);
     padding-bottom: 5px;
@@ -196,16 +179,19 @@ nav a:hover {
 
 .level-info-row {
     display: flex;
-    flex-wrap: wrap;
     gap: 20px;
     margin-bottom: 10px;
     font-size: 14px;
 }
-.level-info-row p {
-    flex: 1 1 45%; /* Allows two items per row */
+/* New layout for info rows */
+.level-info-row.top-row p {
+    flex: 1 1 30%; /* Three items per row */
+}
+.level-info-row.bottom-row p {
+    flex: 1 1 45%; /* Two items per row */
 }
 
-/* --- VICTOR LIST (RIGHT) - NEW HEADER --- */
+/* --- VICTOR LIST (RIGHT) - FIXED SPACING --- */
 .victor-header {
     display: grid;
     grid-template-columns: 2fr 1fr 0.5fr;
@@ -223,22 +209,25 @@ nav a:hover {
     font-size: 14px;
 }
 
+.center-text {
+    text-align: center;
+}
+.right-text {
+    text-align: right;
+    padding-right: 5px;
+}
+
 .victor-name {
     font-weight: bold;
-}
-.victor-enjoyment {
-    text-align: center;
 }
 
 .victor-video-link {
     color: var(--accent-color);
     text-decoration: none;
     font-size: 16px;
-    text-align: right;
-    padding-right: 5px;
 }
 
-/* --- LEADERBOARD --- */
+/* --- LEADERBOARD & PAGINATION --- */
 .leaderboard-table {
     width: 100%;
     border-collapse: collapse;
@@ -261,8 +250,25 @@ nav a:hover {
     background-color: #353535;
 }
 
+.pagination-controls {
+    text-align: center;
+    margin-top: 20px;
+}
+.pagination-controls button {
+    background-color: var(--sidebar-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    margin: 0 2px;
+    cursor: pointer;
+}
+.pagination-controls button.active {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    font-weight: bold;
+}
 
-/* --- SUBMIT RECORD PAGE - NEW LAYOUT --- */
+/* --- SUBMIT RECORD PAGE --- */
 .submit-layout {
     display: flex;
     gap: 30px;
@@ -270,14 +276,14 @@ nav a:hover {
 }
 
 .submit-form-container {
-    flex: 2; /* Takes up 2/3 of the space */
+    flex: 2; 
     background-color: var(--main-panel-bg);
     padding: 20px;
     border-radius: 5px;
 }
 
 .submission-guidelines {
-    flex: 1; /* Takes up 1/3 of the space */
+    flex: 1; 
     background-color: var(--sidebar-bg);
     padding: 20px;
     border-radius: 5px;
@@ -297,6 +303,14 @@ nav a:hover {
 .submission-guidelines li {
     margin-bottom: 10px;
 }
+.submission-guidelines strong {
+    color: var(--accent-color);
+}
+.staff-contact {
+    margin-top: 15px;
+    font-style: italic;
+}
+
 
 .submission-header {
     text-align: center;
@@ -323,13 +337,18 @@ nav a:hover {
 }
 
 .form-row.full-width {
-    grid-column: 1 / -1; /* Spans both columns */
+    grid-column: 1 / -1; 
 }
 
 .submission-form label {
     margin-bottom: 5px;
     font-weight: bold;
     font-size: 0.9em;
+}
+.required-asterisk {
+    color: var(--error-color);
+    font-size: 1.1em;
+    margin-left: 2px;
 }
 
 .submission-form input, .submission-form select, .submission-form textarea {
@@ -358,8 +377,8 @@ nav a:hover {
 
 .submit-button {
     padding: 15px 25px;
-    background-color: #5d00d4; /* Dark Purple accent for the button */
-    color: var(--text-color);
+    background-color: var(--submit-button-color); 
+    color: var(--bg-color);
     border: none;
     cursor: pointer;
     font-weight: bold;
@@ -368,15 +387,5 @@ nav a:hover {
 }
 
 .submit-button:hover {
-    background-color: #6a00f0;
-}
-
-.previous-submissions {
-    margin-top: 30px;
-    padding-top: 15px;
-    border-top: 1px solid var(--border-color);
-}
-.previous-submissions h3 {
-    color: #eee;
-    margin-bottom: 10px;
+    background-color: #00e870;
 }
