@@ -20,11 +20,16 @@
     </header>
 
     <main id="content">
-        <section id="home-page" class="page active">
-            <h1>Welcome to the Former Hardest Levels List</h1>
-            <p>This list tracks and ranks the levels that once held the top spot in Geometry Dash history.</p>
-            <button onclick="changePage('list')">View The List</button>
-            <button onclick="changePage('leaderboard')">View Leaderboard</button>
+        <section id="home-page" class="page active centered-page">
+            <h1 class="welcome-title">WELCOME TO THE FHLL!</h1>
+            <p class="welcome-text">
+                The Former Hardest Levels List (FHLL) tracks and ranks the former hardest levels in Geometry Dash (including the current hardest). <br>
+                Levels are ranked according to their historical difficulty and not necessarily their current status on lists like the Demonlist or ILL.
+            </p>
+            <div class="home-buttons">
+                <button onclick="changePage('list')">View The List</button>
+                <button onclick="changePage('leaderboard')">View Leaderboard</button>
+            </div>
         </section>
 
         <section id="list-page" class="page hidden list-layout">
@@ -32,9 +37,7 @@
                 </div>
 
             <div id="level-details-container" class="level-details">
-                <h2 class="level-title">Thinking Space // <span class="level-verifier">Verified by X</span></h2>
-                <p>Click a level on the left to view details.</p>
-            </div>
+                </div>
 
             <div id="level-victors-list" class="sidebar victors-sidebar">
                 </div>
@@ -49,7 +52,7 @@
                         <th>Username</th>
                         <th>Total Points</th>
                         <th>Hardest Level</th>
-                        <th>Victories</th>
+                        <th>Levels Beaten</th>
                     </tr>
                 </thead>
                 <tbody id="leaderboard-body">
@@ -57,24 +60,100 @@
             </table>
         </section>
 
-        <section id="submit-page" class="page hidden">
-            <h1>Submit Your Record</h1>
-            <p>To submit a record, please join our Discord server or fill out the form below:</p>
-            <form>
-                <label for="name">Your GD Username:</label>
-                <input type="text" id="name" required><br>
-                <label for="level">Level Beaten:</label>
-                <input type="text" id="level" required><br>
-                <label for="video">Verification Video Link:</label>
-                <input type="url" id="video" required><br>
-                <button type="submit">Submit (Placeholder)</button>
-            </form>
+        <section id="submit-page" class="page hidden submit-layout">
+            <div class="submit-form-container">
+                <div class="submission-header">
+                    <h2>RECORD SUBMISSION</h2>
+                    <p class="submission-queue">There are currently 0 submissions in the queue.</p>
+                </div>
+                
+                <form class="submission-form">
+                    <div class="form-row">
+                        <label for="submit-level-select">Level:</label>
+                        <select id="submit-level-select" required>
+                            <option value="">Select a Level</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <label for="completion-link">Completion Link:</label>
+                        <input type="url" id="completion-link" placeholder="Video link to your completion" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="player-name">Player Name (GD Username):</label>
+                        <input type="text" id="player-name" placeholder="Your GD Username" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="level-id">Level ID:</label>
+                        <input type="text" id="level-id" placeholder="ID of the level you beat" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="raw-footage">Raw Footage:</label>
+                        <input type="url" id="raw-footage" placeholder="Link to your raw footage (Required for Top 15)" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="enjoyment">Enjoyment (1-10):</label>
+                        <input type="number" id="enjoyment" min="1" max="10" placeholder="e.g. 7.5">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="device">Device:</label>
+                        <select id="device">
+                            <option>PC</option>
+                            <option>Mobile</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="menu">Mod Menu:</label>
+                        <select id="menu">
+                            <option>No Mod Menu</option>
+                            <option>Megahack</option>
+                            <option>iCreate</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row full-width">
+                        <label for="additional-notes">Additional Notes:</label>
+                        <textarea id="additional-notes" placeholder="Anything more you'd like us to know"></textarea>
+                    </div>
+
+                    <div class="placement-notice full-width">
+                        <p>This will be added to a future version of the site.</p>
+                        <p class="final-submission-note">By submitting this record, you acknowledge that it follows the <a href="#submit" onclick="scrollToTop()">submission guidelines.</a></p>
+                    </div>
+
+                    <button type="submit" class="submit-button full-width">Submit Record</button>
+                </form>
+
+                <div class="previous-submissions">
+                    <h3>Previous Submissions (Placeholder)</h3>
+                    <p>Submissions will appear here once the list is live!</p>
+                </div>
+            </div>
+
+            <div class="submission-guidelines">
+                <h3>Submission Guidelines</h3>
+                <p>Please ensure your record complies with the following guidelines:</p>
+                <ul>
+                    <li>Your videos must be uploaded at full speed, clearly displaying all clicks and the entire completion.</li>
+                    <li>**Raw footage is required for all levels ranked in the Top 15.** Raw footage means the completion recorded locally before any editing, ideally with sound and showing proof of the start of the attempt.</li>
+                    <li>Completion videos must be uploaded to YouTube or another recognized video sharing platform (Vimeo, BiliBili). Social media (TikTok, Instagram) links are not permitted.</li>
+                    <li>Videos may not be deleted after acceptance. If you delete the video, the record will be removed.</li>
+                    <li>Do not use illegal or hacked versions of the game. Verification status may be checked by list staff.</li>
+                    <li>Display the level's ID, star count, and demon difficulty (if applicable) clearly at the beginning or end of the video.</li>
+                </ul>
+                <p>For any questions, please contact the staff via Discord.</p>
+            </div>
         </section>
 
         <section id="profile-page" class="page hidden">
             <h1>Your Player Profile (Placeholder)</h1>
-            <p>To build player profiles on a static site, you would typically use a tool like GitHub Pages and a JavaScript framework, or manually create HTML files for each player.</p>
-            <p>For now, you can link this to your player statistics on an external site like the official Demon List or a custom sheet.</p>
+            <p>This section is reserved for future updates. For now, check the Leaderboard to see your total points and levels beaten!</p>
         </section>
     </main>
 
@@ -85,19 +164,27 @@
                 page.classList.add('hidden');
                 page.classList.remove('active');
             });
-            document.getElementById(pageId + '-page').classList.remove('hidden');
-            document.getElementById(pageId + '-page').classList.add('active');
+            const targetPage = document.getElementById(pageId + '-page');
+            if(targetPage) {
+                targetPage.classList.remove('hidden');
+                targetPage.classList.add('active');
+            }
 
-            // Re-run initialization for page-specific elements (like leaderboard)
+            // Re-run initialization for page-specific elements
             if (pageId === 'leaderboard') {
                 renderLeaderboard();
             }
+        }
+
+        function scrollToTop() {
+            window.scrollTo(0, 0);
         }
 
         // Handle URL Hash navigation
         window.addEventListener('hashchange', () => {
             const hash = window.location.hash.substring(1) || 'home';
             changePage(hash);
+            scrollToTop();
         });
 
         // Initialize on load to handle the starting page
