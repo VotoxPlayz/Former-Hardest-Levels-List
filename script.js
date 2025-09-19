@@ -61,7 +61,7 @@ function renderLevelList() {
         const listItem = document.createElement('div');
         listItem.className = 'level-list-item';
         listItem.dataset.levelName = level.name;
-        // Revert: Change list items back to styled buttons/boxes (achieved via CSS/HTML structure)
+        // The structure for buttons is in HTML/CSS, this just populates the content
         listItem.innerHTML = `
             <span class="level-rank">#${level.rank}</span>
             <span class="level-name">${level.name}</span>
@@ -84,10 +84,11 @@ function displayLevelDetails(level) {
     if (!detailsContainer || !victorsContainer) return;
 
     // A. Update Level Details (Center Column) - New Info Layout
+    // Replaced `**text**` with <strong>text</strong> for consistent bolding
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
         
-        <p class="level-description">**${level.description}**</p>
+        <p class="level-description"><strong>${level.description}</strong></p>
 
         <div class="video-placeholder">
             <iframe src="${level.video.replace('watch?v=', 'embed/').split('&')[0]}" frameborder="0" allowfullscreen></iframe>
@@ -100,8 +101,8 @@ function displayLevelDetails(level) {
         </div>
         <div class="level-info-row bottom-row">
             <p><strong>Average Enjoyment:</strong> ${level.enjoyment}</p>
-            <p><strong>Top 1 Date:</strong> ${level.dateAsTop1}</p>
-            <p><strong>Endscreen Death:</strong> ${level.endscreenDeath}</p>
+            <p><strong>Top 1 Date:</strong> ${level.dateAsTop1} <span class="info-tooltip" title="Date this level was considered the hardest level.">?</span></p>
+            <p><strong>Endscreen Death:</strong> ${level.endscreenDeath} <span class="info-tooltip" title="Is it possible to die in the endscreen of this level?">?</span></p>
         </div>
     `;
 
@@ -126,7 +127,6 @@ function displayLevelDetails(level) {
     levelVictors.forEach(victor => {
         const victorItem = document.createElement('div');
         victorItem.className = 'victor-item';
-        // Note: enjoyment is validated in the submit form, but here we expect a string like "7.5"
         victorItem.innerHTML = `
             <span class="victor-name">${victor.player}</span>
             <span class="victor-enjoyment center-text">${victor.enjoyment || 'N/A'}</span>
@@ -184,6 +184,7 @@ function calculateLeaderboard() {
 }
 
 function renderLeaderboard(page = 1) {
+    // Ensure leaderboard is calculated before rendering
     if (calculatedLeaderboard.length === 0) {
         calculateLeaderboard();
     }
@@ -199,7 +200,7 @@ function renderLeaderboard(page = 1) {
     const totalPlayers = calculatedLeaderboard.length;
     const totalPages = Math.ceil(totalPlayers / PLAYERS_PER_PAGE);
     const start = (page - 1) * PLAYERS_PER_PAGE;
-    const end = start + PLAYERS_PERPAGES;
+    const end = start + PLAYERS_PER_PAGE; // Fixed typo 'PERPAGES' to 'PER_PAGE'
 
     const playersToShow = calculatedLeaderboard.slice(start, end);
 
@@ -229,7 +230,6 @@ function renderLeaderboard(page = 1) {
 // --- 5. SUBMIT PAGE SETUP AND LOGIC ---
 function setupSubmitPage() {
     const levelSelect = document.getElementById('submit-level-select');
-    const rawFootageRow = document.getElementById('raw-footage-row');
     const rawFootageInput = document.getElementById('raw-footage');
     const rawFootageLabel = document.querySelector('label[for="raw-footage"]');
 
@@ -261,7 +261,8 @@ function setupSubmitPage() {
         }
     });
     
-    // Initial check (in case Acheron is default selected)
+    // Initial check (in case Acheron is default selected, or no level selected)
+    // Dispatch change event to set initial raw footage requirement
     levelSelect.dispatchEvent(new Event('change'));
 
     // Setup enjoyment input change listener for decimal enforcement
