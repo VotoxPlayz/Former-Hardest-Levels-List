@@ -88,7 +88,7 @@ function displayLevelDetails(level) {
     // If 'Impossible', it means the endscreen IS safe (i.e., YES to "Safe Endscreen").
     const endscreenStatusValue = level.endscreenDeath === 'Possible' ? 'No' : 'Yes';
     
-    // A. Update Level Details (Center Column) - Tooltip removed
+    // A. Update Level Details (Center Column)
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
         
@@ -113,8 +113,11 @@ function displayLevelDetails(level) {
         </div>
     `;
 
-    // B. Update Victors List (Right Column) - Enjoyment column removed
-    const levelVictors = VICTOR_COMPLETIONS.filter(v => v.level === level.name)
+    // B. Update Victors List (Right Column) - Filter out the verifier from the victor list
+    // Get the name of the verifier for the current level
+    const verifierName = level.verifier;
+
+    const levelVictors = VICTOR_COMPLETIONS.filter(v => v.level === level.name && v.player !== verifierName)
                                            .sort((a, b) => {
                                                 if (a.date && b.date) {
                                                     return new Date(a.date) - new Date(b.date);
@@ -132,7 +135,6 @@ function displayLevelDetails(level) {
 
     levelVictors.forEach(victor => {
         const victorItem = document.createElement('div');
-        // Use a new class for the victor item grid structure
         victorItem.className = 'victor-item-no-enjoyment'; 
         victorItem.innerHTML = `
             <span class="victor-name">${victor.player}</span>
@@ -149,13 +151,8 @@ let calculatedLeaderboard = [];
 function calculateLeaderboard() {
     const playerScores = {}; 
 
-    VICTOR_COMPLETIONS.forEach(completion => {
-        // Need to ensure processedLevels has data before using it!
-        const level = processedLevels.find(l => l.name === completion.level);
-        if (!level) return;
-
-        const player = completion.player;
-
+    // Helper function to initialize player data structure
+    const initPlayer = (player) => {
         if (!playerScores[player]) {
             playerScores[player] = { 
                 points: 0, 
@@ -163,7 +160,40 @@ function calculateLeaderboard() {
                 hardestLevel: { name: "", points: 0 } 
             };
         }
+    };
 
+    // 1. Process Verifier Points (The primary source of points)
+    processedLevels.forEach(level => {
+        const verifier = level.verifier;
+        initPlayer(verifier);
+
+        // Add points for verifying the level
+        playerScores[verifier].points += level.points;
+        playerScores[verifier].levelsBeaten.add(level.name);
+
+        // Update hardest level if applicable
+        if (level.points > playerScores[verifier].hardestLevel.points) {
+            playerScores[verifier].hardestLevel = { name: level.name, points: level.points };
+        }
+    });
+
+    // 2. Process Victor Points (Only for non-verifier completions)
+    VICTOR_COMPLETIONS.forEach(completion => {
+        const level = processedLevels.find(l => l.name === completion.level);
+        if (!level) return;
+
+        const player = completion.player;
+        const verifier = level.verifier;
+
+        // SKIP if the player is the verifier for this specific level (avoid double counting/override)
+        if (player === verifier) {
+            // Note: The verifier already received points in step 1.
+            return;
+        }
+
+        initPlayer(player);
+        
+        // Add points for beating the level (as a victor)
         playerScores[player].points += level.points;
         playerScores[player].levelsBeaten.add(level.name);
 
@@ -172,6 +202,7 @@ function calculateLeaderboard() {
         }
     });
 
+    // 3. Finalize and Sort Leaderboard
     let leaderboard = Object.keys(playerScores).map(player => ({
         username: player,
         points: playerScores[player].points,
