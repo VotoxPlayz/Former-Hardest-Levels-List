@@ -1,0 +1,237 @@
+/* style.css */
+
+:root {
+    --bg-color: #1a1a1a;
+    --text-color: #f0f0f0;
+    --accent-color: #00d463; /* Geometry Dash Green */
+    --main-panel-bg: #2b2b2b;
+    --sidebar-bg: #222222;
+    --border-color: #383838;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding-top: 50px; /* Space for the fixed header */
+}
+
+/* --- HEADER/NAVIGATION --- */
+header {
+    background-color: var(--sidebar-bg);
+    border-bottom: 2px solid var(--accent-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 100;
+}
+
+.logo {
+    color: var(--accent-color);
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin-left: 20px;
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: var(--accent-color);
+}
+
+/* --- PAGE MANAGEMENT --- */
+.page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- LIST LAYOUT (3-COLUMN) --- */
+.list-layout {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    min-height: calc(100vh - 70px);
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-bg);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.level-details {
+    flex-grow: 1;
+    background-color: var(--main-panel-bg);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    min-width: 400px;
+}
+
+.victors-sidebar {
+    width: 250px;
+}
+
+/* --- LEVEL LIST ITEMS (LEFT) --- */
+.level-list-item {
+    background-color: var(--main-panel-bg);
+    padding: 8px;
+    margin-bottom: 5px;
+    border-left: 4px solid transparent;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    transition: background-color 0.2s, border-left-color 0.2s;
+}
+
+.level-list-item:hover, .level-list-item.active {
+    background-color: var(--border-color);
+    border-left-color: var(--accent-color);
+}
+
+.level-rank {
+    font-weight: bold;
+    color: var(--accent-color);
+    margin-right: 5px;
+}
+.level-creator {
+    font-size: 11px;
+    color: #999;
+}
+
+/* --- LEVEL DETAILS (CENTER) --- */
+.level-title {
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+.level-verifier {
+    color: #eee;
+    font-weight: normal;
+}
+
+.video-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 15px;
+}
+
+.video-placeholder iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.level-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* --- VICTOR LIST (RIGHT) --- */
+.victor-item {
+    padding: 5px 0;
+    border-bottom: 1px dashed var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.victor-name {
+    font-weight: bold;
+}
+
+.victor-video-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 16px;
+    padding-left: 5px;
+}
+
+/* --- LEADERBOARD --- */
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: var(--main-panel-bg);
+}
+
+.leaderboard-table th, .leaderboard-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.leaderboard-table th {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    font-weight: bold;
+}
+
+/* --- SUBMIT RECORD FORM --- */
+#submit-page form {
+    background-color: var(--main-panel-bg);
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+}
+
+#submit-page label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#submit-page input {
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: var(--sidebar-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 3px;
+}
+
+#submit-page button {
+    padding: 10px 15px;
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+#submit-page button:hover {
+    opacity: 0.8;
+}
