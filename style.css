@@ -137,7 +137,7 @@ nav a:hover {
     overflow-y: auto;
 }
 
-/* --- LEVEL LIST ITEMS (LEFT) - Styled as buttons (Fixed Layout) --- */
+/* --- LEVEL LIST ITEMS (LEFT) - Styled as buttons --- */
 .level-list-item {
     background-color: var(--main-panel-bg);
     padding: 8px 10px; 
@@ -146,7 +146,7 @@ nav a:hover {
     border-left: 4px solid transparent;
     cursor: pointer;
     display: flex;
-    flex-direction: column; /* Changed to column to stack rank/name and creator */
+    flex-direction: column; 
     align-items: flex-start;
     font-size: 14px;
     transition: background-color 0.2s, border-left-color 0.2s, border-color 0.2s;
@@ -154,7 +154,7 @@ nav a:hover {
 }
 
 .level-list-item:hover, .level-list-item.active {
-    background-color: #353535; /* Slightly darker hover */
+    background-color: #353535; 
     border-left-color: var(--accent-color);
     border-color: var(--accent-color);
 }
@@ -163,7 +163,7 @@ nav a:hover {
     font-weight: bold;
     color: var(--accent-color);
     margin-right: 8px; 
-    display: inline; /* Ensure rank and name are on the same line */
+    display: inline; 
 }
 .level-name {
     font-weight: bold;
@@ -173,7 +173,7 @@ nav a:hover {
 .level-creator {
     font-size: 11px;
     color: #999;
-    white-space: nowrap; /* Prevent "by Creator" from wrapping vertically */
+    white-space: nowrap; 
 }
 
 
@@ -227,7 +227,6 @@ nav a:hover {
     flex-wrap: wrap; 
 }
 
-/* Ensure the colon in the label has a space after it in the display */
 .level-info-row p {
     flex: 1 1 30%; 
     display: flex;
@@ -236,25 +235,14 @@ nav a:hover {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+/* REMOVED the content: ":\A0" from the strong tag. The colon is now only rendered once via JS. */
 .level-info-row p strong:after {
-    content: ":\A0"; /* Adds colon followed by a non-breaking space */
-    white-space: pre; /* Ensures the space is honored */
-}
-/* Override for the end status and date, where the colon is already in the JS */
-.level-info-row p:nth-child(2) strong:after, 
-.level-info-row p:nth-child(3) strong:after, 
-.level-info-row.bottom-row p:nth-child(2) strong:after,
-.level-info-row.bottom-row p:nth-child(3) strong:after {
-    content: ":\A0"; /* Using \A0 for consistency, keeping colon outside of strong tag in this implementation for now */
-}
-/* Removing the content from the strong tag since we moved the colon into the template in script.js to control spacing better */
-.level-info-row p strong:after {
-    content: ": ";
+    content: " "; /* Replaced colon with a single space for separation */
     white-space: pre;
 }
 
 
-/* Tooltip removal style */
+/* Tooltip removal style (remains hidden) */
 .info-tooltip {
     display: none;
 }
@@ -263,7 +251,7 @@ nav a:hover {
 /* --- VICTOR LIST (RIGHT) - FIXED SPACING (Enjoyment in the middle) --- */
 .victor-header {
     display: grid;
-    /* Name (2fr), Enjoyment (1fr, for centering), Video (0.5fr) */
+    /* Adjusted columns to give Enjoyment more space and center it effectively */
     grid-template-columns: 2fr 1fr 0.5fr; 
     font-weight: bold;
     margin-top: 10px;
@@ -273,7 +261,7 @@ nav a:hover {
 .victor-item {
     padding: 5px 0;
     border-bottom: 1px dashed var(--border-color);
-    /* Name (2fr), Enjoyment (1fr), Video (0.5fr) */
+    /* Adjusted columns to give Enjoyment more space and center it effectively */
     display: grid;
     grid-template-columns: 2fr 1fr 0.5fr; 
     align-items: center;
@@ -281,7 +269,8 @@ nav a:hover {
 }
 
 .center-text {
-    text-align: center; /* This ensures enjoyment is visually centered in its column */
+    /* Ensures the text is centered within its column container */
+    text-align: center; 
 }
 .right-text {
     text-align: right;
@@ -467,9 +456,9 @@ nav a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Align to top */
+    justify-content: flex-start; 
     min-height: calc(100vh - 70px);
-    padding-top: 100px; /* Adjust as needed for spacing from header */
+    padding-top: 100px; 
 }
 .top-middle-centered-page h1 {
     margin-bottom: 20px;
