@@ -88,7 +88,7 @@ function displayLevelDetails(level) {
     // If 'Impossible', it means the endscreen IS safe (i.e., YES to "Safe Endscreen").
     const endscreenStatusValue = level.endscreenDeath === 'Possible' ? 'No' : 'Yes';
     
-    // A. Update Level Details (Center Column) - New "Safe Endscreen" and tooltip
+    // A. Update Level Details (Center Column) - New "Safe Endscreen" and tooltip placement AFTER value
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
         
@@ -108,11 +108,11 @@ function displayLevelDetails(level) {
             <p><strong>Top 1 Date:</strong> ${level.dateAsTop1}</p>
             <p>
                 <strong>Safe Endscreen:</strong> 
+                ${endscreenStatusValue}
                 <span class="info-tooltip">
                     <span class="tooltip-icon">?</span>
                     <span class="tooltip-text">A "Yes" value confirms it is IMPOSSIBLE to die during the endscreen.</span>
                 </span>
-                ${endscreenStatusValue}
             </p>
         </div>
     `;
