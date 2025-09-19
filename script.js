@@ -5,17 +5,14 @@
 // Function to calculate the exponential points
 function calculatePoints(rank, totalLevels) {
     // Rank 1 gets 500 points, Rank 55 gets 1 point.
-    // The formula is a scaled exponential decay.
     const maxPoints = 500;
     const minPoints = 1;
 
     // Normalize rank (1 is highest, totalLevels is lowest)
-    const normalizedRank = totalLevels - rank + 1; // e.g., if total=55, rank 1 becomes 55, rank 55 becomes 1
+    const normalizedRank = totalLevels - rank + 1;
 
-    // A simple exponential scaling from 1 to 55 (or whatever totalLevels is)
-    // Formula: points = (maxPoints - minPoints) * ( (normalizedRank - 1) / (totalLevels - 1) )^2 + minPoints
-    // Using a simpler, more direct exponential mapping:
-    const exponent = 2.5; // Controls the steepness of the curve (higher = steeper drop-off)
+    // Exponential scaling (exponent 2.5 for a steeper curve)
+    const exponent = 2.5;
     const scaledPoints = (maxPoints - minPoints) * Math.pow(((totalLevels - rank) / (totalLevels - 1)), exponent) + minPoints;
     
     // Round to the nearest integer
@@ -39,8 +36,9 @@ function initializeList() {
     // 2. Build the main level list sidebar
     renderLevelList();
 
-    // 3. Calculate and display the leaderboard
-    renderLeaderboard();
+    // 3. Calculate and display the leaderboard (called when leaderboard page is active)
+    // 4. Initial content setup for the Submit Page
+    setupSubmitPage();
 }
 
 function renderLevelList() {
@@ -73,33 +71,52 @@ function displayLevelDetails(level) {
 
     if (!detailsContainer || !victorsContainer) return;
 
-    // A. Update Level Details (Center Column)
+    // A. Update Level Details (Center Column) - Matching the new sketch
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
-        <p class="level-creator-info">by ${level.creator}</p>
+        
+        <p class="level-description">${level.description}</p>
+
         <div class="video-placeholder">
             <iframe src="${level.video.replace('watch?v=', 'embed/').split('&')[0]}" frameborder="0" allowfullscreen></iframe>
         </div>
+        
         <div class="level-info-row">
             <p><strong>Level ID:</strong> ${level.id}</p>
             <p><strong>FHLL Points:</strong> ${level.points}</p>
             <p><strong>Average Enjoyment:</strong> ${level.enjoyment}</p>
         </div>
-        <p class="level-description">${level.description}</p>
-        <p class="level-context"><strong>Context:</strong> Held the #1 spot since ${level.dateAsTop1}.</p>
+        <div class="level-info-row">
+            <p><strong>Publisher:</strong> ${level.creator}</p>
+            <p><strong>Top 1 Date:</strong> ${level.dateAsTop1}</p>
+        </div>
     `;
 
     // B. Update Victors List (Right Column)
     const levelVictors = VICTOR_COMPLETIONS.filter(v => v.level === level.name)
-                                           .sort((a, b) => new Date(a.date) - new Date(b.date));
+                                           .sort((a, b) => {
+                                                // Sort by date if available, or just enjoyment if needed
+                                                if (a.date && b.date) {
+                                                    return new Date(a.date) - new Date(b.date);
+                                                }
+                                                return 0;
+                                           });
 
-    victorsContainer.innerHTML = `<h3>Victors (${levelVictors.length})</h3>`;
+    victorsContainer.innerHTML = `
+        <h3>Victors (${levelVictors.length})</h3>
+        <div class="victor-header">
+            <span>Name:</span>
+            <span>Enjoyment:</span>
+            <span>Video:</span>
+        </div>
+    `;
+
     levelVictors.forEach(victor => {
         const victorItem = document.createElement('div');
         victorItem.className = 'victor-item';
         victorItem.innerHTML = `
             <span class="victor-name">${victor.player}</span>
-            <span class="victor-date">${victor.date}</span>
+            <span class="victor-enjoyment">${victor.enjoyment || '?'}</span>
             <a href="${victor.video}" target="_blank" class="victor-video-link">▶️</a>
         `;
         victorsContainer.appendChild(victorItem);
@@ -109,8 +126,8 @@ function displayLevelDetails(level) {
 // --- 3. LEADERBOARD CALCULATION AND RENDERING ---
 
 function renderLeaderboard() {
-    // 1. Calculate total points and wins for each player
-    const playerScores = {}; // { "PlayerName": { points: N, wins: N, hardestLevel: "LevelName" } }
+    // 1. Calculate total points, wins, and hardest level for each player
+    const playerScores = {}; // { "PlayerName": { points: N, levelsBeaten: Set<LevelName>, hardestLevel: { name: "", points: 0 } } }
 
     VICTOR_COMPLETIONS.forEach(completion => {
         const level = processedLevels.find(l => l.name === completion.level);
@@ -119,14 +136,18 @@ function renderLeaderboard() {
         const player = completion.player;
 
         if (!playerScores[player]) {
-            playerScores[player] = { points: 0, wins: 0, hardestLevel: { name: "", points: 0 } };
+            playerScores[player] = { 
+                points: 0, 
+                levelsBeaten: new Set(), 
+                hardestLevel: { name: "", points: 0 } 
+            };
         }
 
         // Add points
         playerScores[player].points += level.points;
 
-        // Count win
-        playerScores[player].wins += 1;
+        // Track level beaten (using Set prevents double counting if we allowed multiple entries for one player on one level)
+        playerScores[player].levelsBeaten.add(level.name);
 
         // Determine hardest level (based on highest point value)
         if (level.points > playerScores[player].hardestLevel.points) {
@@ -137,7 +158,9 @@ function renderLeaderboard() {
     // 2. Convert object to array and sort
     let leaderboard = Object.keys(playerScores).map(player => ({
         username: player,
-        ...playerScores[player]
+        points: playerScores[player].points,
+        levelsBeaten: playerScores[player].levelsBeaten.size,
+        hardestLevel: playerScores[player].hardestLevel,
     }));
 
     // Sort by: 1. Points (descending), 2. Hardest Level Points (descending)
@@ -160,8 +183,22 @@ function renderLeaderboard() {
             <td>${player.username}</td>
             <td>${player.points}</td>
             <td>${player.hardestLevel.name}</td>
-            <td>${player.wins}</td>
+            <td>${player.levelsBeaten}</td>
         `;
+    });
+}
+
+// --- 4. SUBMIT PAGE SETUP ---
+function setupSubmitPage() {
+    const levelSelect = document.getElementById('submit-level-select');
+    if (!levelSelect) return;
+
+    // Populate the dropdown with levels from the list
+    processedLevels.forEach(level => {
+        const option = document.createElement('option');
+        option.value = level.name;
+        option.textContent = `#${level.rank} - ${level.name}`;
+        levelSelect.appendChild(option);
     });
 }
 
