@@ -83,7 +83,10 @@ function displayLevelDetails(level) {
 
     if (!detailsContainer || !victorsContainer) return;
 
-    // A. Update Level Details (Center Column)
+    // Determine simplified endscreen death status
+    const endscreenStatus = level.endscreenDeath === 'Possible' ? 'Possible' : 'Impossible';
+    
+    // A. Update Level Details (Center Column) - Includes new spacing and simplified info
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
         
@@ -100,8 +103,8 @@ function displayLevelDetails(level) {
         </div>
         <div class="level-info-row bottom-row">
             <p><strong>Average Enjoyment:</strong> ${level.enjoyment}</p>
-            <p><strong>Top 1 Date:</strong> ${level.dateAsTop1} <span class="info-tooltip" title="The date this level was considered the hardest level.">?</span></p>
-            <p><strong>Endscreen Death:</strong> ${level.endscreenDeath} <span class="info-tooltip" title="It is possible to die in the endscreen of this level.">?</span></p>
+            <p><strong>Top 1 Date:</strong> ${level.dateAsTop1}</p>
+            <p><strong>Endscreen Death:</strong> ${endscreenStatus}</p>
         </div>
     `;
 
@@ -126,6 +129,7 @@ function displayLevelDetails(level) {
     levelVictors.forEach(victor => {
         const victorItem = document.createElement('div');
         victorItem.className = 'victor-item';
+        // The 'center-text' class handles the alignment of enjoyment
         victorItem.innerHTML = `
             <span class="victor-name">${victor.player}</span>
             <span class="victor-enjoyment center-text">${victor.enjoyment || 'N/A'}</span>
