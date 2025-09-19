@@ -235,16 +235,67 @@ nav a:hover {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-/* FIX: Removed the incorrect colon that was duplicating the colon from JS/HTML */
+/* Ensure there is a space after the label (the strong tag) for all info items */
 .level-info-row p strong:after {
-    content: " "; /* Just a space after the strong text, no colon needed */
+    content: " "; 
     white-space: pre;
 }
 
-
-/* Tooltip removal style (remains hidden) */
+/* --- TOOLTIP STYLING (NEW) --- */
 .info-tooltip {
-    display: none;
+    position: relative;
+    display: inline-block;
+    cursor: help;
+    margin-right: 5px;
+}
+
+.tooltip-icon {
+    font-size: 0.9em;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--sidebar-bg);
+    color: var(--text-color);
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the icon */
+    left: 50%;
+    margin-left: -100px; /* Center the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: normal; /* Allow text wrapping */
+}
+
+/* Tooltip Arrow */
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--sidebar-bg) transparent transparent transparent;
+}
+
+.info-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }
 
 
@@ -268,7 +319,6 @@ nav a:hover {
     font-size: 14px;
 }
 
-/* Removed .center-text style as the column is gone */
 .right-text {
     text-align: right;
     padding-right: 5px;
