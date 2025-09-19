@@ -235,9 +235,9 @@ nav a:hover {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-/* REMOVED the content: ":\A0" from the strong tag. The colon is now only rendered once via JS. */
+/* FIX: Removed the incorrect colon that was duplicating the colon from JS/HTML */
 .level-info-row p strong:after {
-    content: " "; /* Replaced colon with a single space for separation */
+    content: " "; /* Just a space after the strong text, no colon needed */
     white-space: pre;
 }
 
@@ -248,30 +248,27 @@ nav a:hover {
 }
 
 
-/* --- VICTOR LIST (RIGHT) - FIXED SPACING (Enjoyment in the middle) --- */
-.victor-header {
+/* --- VICTOR LIST (RIGHT) - SIMPLIFIED LAYOUT (No Enjoyment) --- */
+.victor-header-no-enjoyment {
     display: grid;
-    /* Adjusted columns to give Enjoyment more space and center it effectively */
-    grid-template-columns: 2fr 1fr 0.5fr; 
+    /* Name (2.5fr), Video (0.5fr) */
+    grid-template-columns: 2.5fr 0.5fr; 
     font-weight: bold;
     margin-top: 10px;
     padding-bottom: 5px;
     border-bottom: 2px solid var(--accent-color);
 }
-.victor-item {
+.victor-item-no-enjoyment {
     padding: 5px 0;
     border-bottom: 1px dashed var(--border-color);
-    /* Adjusted columns to give Enjoyment more space and center it effectively */
+    /* Name (2.5fr), Video (0.5fr) */
     display: grid;
-    grid-template-columns: 2fr 1fr 0.5fr; 
+    grid-template-columns: 2.5fr 0.5fr; 
     align-items: center;
     font-size: 14px;
 }
 
-.center-text {
-    /* Ensures the text is centered within its column container */
-    text-align: center; 
-}
+/* Removed .center-text style as the column is gone */
 .right-text {
     text-align: right;
     padding-right: 5px;
