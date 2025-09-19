@@ -21,14 +21,15 @@
 
     <main id="content">
         <section id="home-page" class="page active centered-page">
-            <h1 class="welcome-title">WELCOME TO THE FHLL!</h1>
-            <p class="welcome-text">
-                The Former Hardest Levels List (FHLL) tracks and ranks the former hardest levels in Geometry Dash (including the current hardest). <br>
-                Levels are ranked according to their historical difficulty and not necessarily their current status on lists like the Demonlist or ILL.
-            </p>
-            <div class="home-buttons">
-                <button onclick="changePage('list')">View The List</button>
-                <button onclick="changePage('leaderboard')">View Leaderboard</button>
+            <div class="welcome-box">
+                <h1 class="welcome-title">WELCOME TO THE FHLL!</h1>
+                <p class="welcome-text">
+                    The **Former Hardest Levels List (FHLL)** tracks and ranks the former hardest levels (including the current hardest) in Geometry Dash, **ranked according to their difficulty status on the Impossible Levels List (ILL)**. This list celebrates the history of difficulty in the game.
+                </p>
+                <div class="home-buttons">
+                    <button onclick="changePage('list')">View The List</button>
+                    <button onclick="changePage('leaderboard')">View Leaderboard</button>
+                </div>
             </div>
         </section>
 
@@ -58,6 +59,8 @@
                 <tbody id="leaderboard-body">
                     </tbody>
             </table>
+            <div id="leaderboard-pagination" class="pagination-controls">
+                </div>
         </section>
 
         <section id="submit-page" class="page hidden submit-layout">
@@ -69,61 +72,64 @@
                 
                 <form class="submission-form">
                     <div class="form-row">
-                        <label for="submit-level-select">Level:</label>
+                        <label for="submit-level-select">Level: <span class="required-asterisk">*</span></label>
                         <select id="submit-level-select" required>
                             <option value="">Select a Level</option>
                         </select>
                     </div>
                     
                     <div class="form-row">
-                        <label for="completion-link">Completion Link:</label>
+                        <label for="completion-link">Completion Link: <span class="required-asterisk">*</span></label>
                         <input type="url" id="completion-link" placeholder="Video link to your completion" required>
                     </div>
 
                     <div class="form-row">
-                        <label for="player-name">Player Name (GD Username):</label>
+                        <label for="player-name">Username: <span class="required-asterisk">*</span></label>
                         <input type="text" id="player-name" placeholder="Your GD Username" required>
                     </div>
 
                     <div class="form-row">
-                        <label for="level-id">Level ID:</label>
-                        <input type="text" id="level-id" placeholder="ID of the level you beat" required>
-                    </div>
-
-                    <div class="form-row">
-                        <label for="raw-footage">Raw Footage:</label>
-                        <input type="url" id="raw-footage" placeholder="Link to your raw footage (Required for Top 15)" required>
-                    </div>
-
-                    <div class="form-row">
-                        <label for="enjoyment">Enjoyment (1-10):</label>
-                        <input type="number" id="enjoyment" min="1" max="10" placeholder="e.g. 7.5">
-                    </div>
-
-                    <div class="form-row">
-                        <label for="device">Device:</label>
-                        <select id="device">
+                        <label for="device">Device: <span class="required-asterisk">*</span></label>
+                        <select id="device" required>
                             <option>PC</option>
                             <option>Mobile</option>
                         </select>
                     </div>
 
                     <div class="form-row">
-                        <label for="menu">Mod Menu:</label>
-                        <select id="menu">
+                        <label for="level-id">Level ID (Optional):</label>
+                        <input type="text" id="level-id" placeholder="ID of the LDM/Bugfix if used">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="raw-footage">Raw Footage (Required for Top 15):</label>
+                        <input type="url" id="raw-footage" placeholder="Link to your raw footage (Drive/Dropbox/etc.)">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="enjoyment">Enjoyment (e.g. 7.5):</label>
+                        <input type="number" step="0.1" id="enjoyment" min="1" max="10" placeholder="e.g. 7.1, 6.0">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="menu">Mod Menu: <span class="required-asterisk">*</span></label>
+                        <select id="menu" required>
                             <option>No Mod Menu</option>
-                            <option>Megahack</option>
+                            <option>Mega Hack</option>
+                            <option>QOLMod</option>
+                            <option>Eclipse</option>
                             <option>iCreate</option>
+                            <option>Prism</option>
+                            <option>Other (Specify In Notes)</option>
                         </select>
                     </div>
 
                     <div class="form-row full-width">
-                        <label for="additional-notes">Additional Notes:</label>
-                        <textarea id="additional-notes" placeholder="Anything more you'd like us to know"></textarea>
+                        <label for="additional-notes">Additional Notes (Optional):</label>
+                        <textarea id="additional-notes" placeholder="Any additional context for your run."></textarea>
                     </div>
 
                     <div class="placement-notice full-width">
-                        <p>This will be added to a future version of the site.</p>
                         <p class="final-submission-note">By submitting this record, you acknowledge that it follows the <a href="#submit" onclick="scrollToTop()">submission guidelines.</a></p>
                     </div>
 
@@ -131,29 +137,32 @@
                 </form>
 
                 <div class="previous-submissions">
-                    <h3>Previous Submissions (Placeholder)</h3>
+                    <h3>Previous Submissions</h3>
                     <p>Submissions will appear here once the list is live!</p>
                 </div>
             </div>
 
             <div class="submission-guidelines">
                 <h3>Submission Guidelines</h3>
-                <p>Please ensure your record complies with the following guidelines:</p>
+                <p>Please review these guidelines carefully before submitting a record:</p>
                 <ul>
-                    <li>Your videos must be uploaded at full speed, clearly displaying all clicks and the entire completion.</li>
-                    <li>**Raw footage is required for all levels ranked in the Top 15.** Raw footage means the completion recorded locally before any editing, ideally with sound and showing proof of the start of the attempt.</li>
-                    <li>Completion videos must be uploaded to YouTube or another recognized video sharing platform (Vimeo, BiliBili). Social media (TikTok, Instagram) links are not permitted.</li>
-                    <li>Videos may not be deleted after acceptance. If you delete the video, the record will be removed.</li>
-                    <li>Do not use illegal or hacked versions of the game. Verification status may be checked by list staff.</li>
-                    <li>Display the level's ID, star count, and demon difficulty (if applicable) clearly at the beginning or end of the video.</li>
+                    <li>**Your video must be uncut and have clicks completely audible the whole way through.** This ensures authenticity and helps staff verify your run.</li>
+                    <li>**Your completion video must be uploaded to YouTube or another recognized video-based platform.** Direct social media links (TikTok, Instagram) are not permitted.</li>
+                    <li>**You must have a visible cheat indicator if your mod menu has one.** This helps verify that no disallowed modifications were used.</li>
+                    <li>**The LDM/Bugfix copy of a level has to, without a doubt, not make a significant difference in the level.** Minor graphical changes are fine, but any change that simplifies gameplay is forbidden.</li>
+                    <li>**Your record can be valid if it ends midway through the endscreen, ONLY if it's impossible to die in the endscreen.** If the last possible point of death has passed, the record is acceptable.</li>
+                    <li>**If your record is in the Top 15, you must submit raw footage, with split audio tracks in a downloadable format (e.g., Google Drive/Dropbox).** This is a mandatory measure for the hardest levels on the list.</li>
+                    <li>**Your record cannot contain any disallowed mods or cheats.** This includes the physics bypass.</li>
+                    <li>**Click Between Frames is allowed, but physics bypass is not.**</li>
+                    <li>**During your completion, you cannot use skips that make the level significantly easier.** This includes major route deviations not intended by the creator.</li>
                 </ul>
-                <p>For any questions, please contact the staff via Discord.</p>
+                <p class="staff-contact">For any questions regarding a submission, please contact the staff via Discord.</p>
             </div>
         </section>
 
-        <section id="profile-page" class="page hidden">
-            <h1>Your Player Profile (Placeholder)</h1>
-            <p>This section is reserved for future updates. For now, check the Leaderboard to see your total points and levels beaten!</p>
+        <section id="profile-page" class="page hidden centered-page">
+            <h1>Player Profile</h1>
+            <p>This section is reserved for future updates and will dynamically display a player's statistics, hardest completions, and list ranking.</p>
         </section>
     </main>
 
@@ -172,7 +181,8 @@
 
             // Re-run initialization for page-specific elements
             if (pageId === 'leaderboard') {
-                renderLeaderboard();
+                // Render the first page of the leaderboard when the page is changed to it
+                renderLeaderboard(1);
             }
         }
 
