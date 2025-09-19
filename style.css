@@ -17,7 +17,9 @@
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
+strong {
+    font-weight: bold; /* Ensure strong is always bold */
+}
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -188,7 +190,7 @@ nav a:hover {
     flex: 1 1 30%; /* Three items per row */
 }
 .level-info-row.bottom-row p {
-    flex: 1 1 45%; /* Two items per row */
+    flex: 1 1 30%; /* Three items per row */
 }
 
 /* --- VICTOR LIST (RIGHT) - FIXED SPACING --- */
