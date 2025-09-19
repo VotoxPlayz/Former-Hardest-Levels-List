@@ -13,7 +13,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
@@ -67,11 +67,51 @@ nav a:hover {
     display: none !important;
 }
 
+/* --- HOME PAGE CENTERING --- */
+.centered-page {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 70px);
+}
+
+.welcome-title {
+    color: var(--accent-color);
+    font-size: 3em;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 212, 99, 0.4);
+}
+
+.welcome-text {
+    max-width: 700px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.home-buttons button {
+    padding: 12px 25px;
+    margin: 0 10px;
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: opacity 0.2s, transform 0.1s;
+    border-radius: 3px;
+}
+
+.home-buttons button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
 /* --- LIST LAYOUT (3-COLUMN) --- */
 .list-layout {
     display: flex;
     gap: 15px;
-    padding: 20px;
     min-height: calc(100vh - 70px);
 }
 
@@ -124,23 +164,28 @@ nav a:hover {
     color: #999;
 }
 
-/* --- LEVEL DETAILS (CENTER) --- */
+/* --- LEVEL DETAILS (CENTER) - NEW LAYOUT --- */
 .level-title {
     color: var(--accent-color);
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 10px;
-    margin-bottom: 15px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
     font-size: 24px;
+    border-bottom: 1px solid var(--border-color);
 }
 .level-verifier {
     color: #eee;
     font-weight: normal;
+}
+.level-description {
+    line-height: 1.5;
+    margin-bottom: 15px;
 }
 
 .video-placeholder {
     width: 100%;
     aspect-ratio: 16 / 9;
     margin-bottom: 15px;
+    border: 1px solid var(--border-color);
 }
 
 .video-placeholder iframe {
@@ -151,17 +196,29 @@ nav a:hover {
 
 .level-info-row {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 10px;
     font-size: 14px;
 }
+.level-info-row p {
+    flex: 1 1 45%; /* Allows two items per row */
+}
 
-/* --- VICTOR LIST (RIGHT) --- */
+/* --- VICTOR LIST (RIGHT) - NEW HEADER --- */
+.victor-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 0.5fr;
+    font-weight: bold;
+    margin-top: 10px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--accent-color);
+}
 .victor-item {
     padding: 5px 0;
     border-bottom: 1px dashed var(--border-color);
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 2fr 1fr 0.5fr;
     align-items: center;
     font-size: 14px;
 }
@@ -169,12 +226,16 @@ nav a:hover {
 .victor-name {
     font-weight: bold;
 }
+.victor-enjoyment {
+    text-align: center;
+}
 
 .victor-video-link {
     color: var(--accent-color);
     text-decoration: none;
     font-size: 16px;
-    padding-left: 5px;
+    text-align: right;
+    padding-right: 5px;
 }
 
 /* --- LEADERBOARD --- */
@@ -196,42 +257,126 @@ nav a:hover {
     color: var(--bg-color);
     font-weight: bold;
 }
+.leaderboard-table tr:hover {
+    background-color: #353535;
+}
 
-/* --- SUBMIT RECORD FORM --- */
-#submit-page form {
+
+/* --- SUBMIT RECORD PAGE - NEW LAYOUT --- */
+.submit-layout {
+    display: flex;
+    gap: 30px;
+    max-width: 1300px;
+}
+
+.submit-form-container {
+    flex: 2; /* Takes up 2/3 of the space */
     background-color: var(--main-panel-bg);
     padding: 20px;
     border-radius: 5px;
+}
+
+.submission-guidelines {
+    flex: 1; /* Takes up 1/3 of the space */
+    background-color: var(--sidebar-bg);
+    padding: 20px;
+    border-radius: 5px;
+    border-left: 3px solid var(--accent-color);
+}
+
+.submission-guidelines h3 {
+    color: var(--accent-color);
+    margin-bottom: 15px;
+}
+.submission-guidelines ul {
+    margin-left: 20px;
+    padding-left: 0;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+.submission-guidelines li {
+    margin-bottom: 10px;
+}
+
+.submission-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.submission-header h2 {
+    color: var(--accent-color);
+    font-size: 2em;
+}
+.submission-queue {
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+.submission-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.form-row {
     display: flex;
     flex-direction: column;
-    max-width: 400px;
 }
 
-#submit-page label {
-    margin-top: 10px;
+.form-row.full-width {
+    grid-column: 1 / -1; /* Spans both columns */
+}
+
+.submission-form label {
     margin-bottom: 5px;
     font-weight: bold;
+    font-size: 0.9em;
 }
 
-#submit-page input {
+.submission-form input, .submission-form select, .submission-form textarea {
     padding: 10px;
-    margin-bottom: 15px;
     background-color: var(--sidebar-bg);
     border: 1px solid var(--border-color);
     color: var(--text-color);
     border-radius: 3px;
+    width: 100%;
+}
+.submission-form textarea {
+    resize: vertical;
+    min-height: 80px;
 }
 
-#submit-page button {
-    padding: 10px 15px;
-    background-color: var(--accent-color);
-    color: var(--bg-color);
+.placement-notice {
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px 0;
+    border-top: 1px dashed var(--border-color);
+    border-bottom: 1px dashed var(--border-color);
+}
+.placement-notice a {
+    color: var(--accent-color);
+}
+
+.submit-button {
+    padding: 15px 25px;
+    background-color: #5d00d4; /* Dark Purple accent for the button */
+    color: var(--text-color);
     border: none;
     cursor: pointer;
     font-weight: bold;
-    transition: opacity 0.2s;
+    font-size: 1.1em;
+    transition: background-color 0.2s;
 }
 
-#submit-page button:hover {
-    opacity: 0.8;
+.submit-button:hover {
+    background-color: #6a00f0;
+}
+
+.previous-submissions {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+.previous-submissions h3 {
+    color: #eee;
+    margin-bottom: 10px;
 }
