@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FHLL - Former Hardest Levels List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <a href="#home" class="logo">FHLL</a>
+        <nav>
+            <a href="#list" data-page="list">The List</a>
+            <a href="#leaderboard" data-page="leaderboard">Leaderboard</a>
+            <a href="#submit" data-page="submit">Submit Record</a>
+            <a href="https://discord.gg/YOUR_DISCORD_INVITE" target="_blank">Discord</a>
+            <a href="#profile" data-page="profile">Profile</a>
+        </nav>
+    </header>
+
+    <main id="content">
+        <section id="home-page" class="page active">
+            <h1>Welcome to the Former Hardest Levels List</h1>
+            <p>This list tracks and ranks the levels that once held the top spot in Geometry Dash history.</p>
+            <button onclick="changePage('list')">View The List</button>
+            <button onclick="changePage('leaderboard')">View Leaderboard</button>
+        </section>
+
+        <section id="list-page" class="page hidden list-layout">
+            <div id="level-list-sidebar" class="sidebar">
+                </div>
+
+            <div id="level-details-container" class="level-details">
+                <h2 class="level-title">Thinking Space // <span class="level-verifier">Verified by X</span></h2>
+                <p>Click a level on the left to view details.</p>
+            </div>
+
+            <div id="level-victors-list" class="sidebar victors-sidebar">
+                </div>
+        </section>
+
+        <section id="leaderboard-page" class="page hidden">
+            <h1>FHLL Leaderboard</h1>
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Total Points</th>
+                        <th>Hardest Level</th>
+                        <th>Victories</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    </tbody>
+            </table>
+        </section>
+
+        <section id="submit-page" class="page hidden">
+            <h1>Submit Your Record</h1>
+            <p>To submit a record, please join our Discord server or fill out the form below:</p>
+            <form>
+                <label for="name">Your GD Username:</label>
+                <input type="text" id="name" required><br>
+                <label for="level">Level Beaten:</label>
+                <input type="text" id="level" required><br>
+                <label for="video">Verification Video Link:</label>
+                <input type="url" id="video" required><br>
+                <button type="submit">Submit (Placeholder)</button>
+            </form>
+        </section>
+
+        <section id="profile-page" class="page hidden">
+            <h1>Your Player Profile (Placeholder)</h1>
+            <p>To build player profiles on a static site, you would typically use a tool like GitHub Pages and a JavaScript framework, or manually create HTML files for each player.</p>
+            <p>For now, you can link this to your player statistics on an external site like the official Demon List or a custom sheet.</p>
+        </section>
+    </main>
+
+    <script>
+        // Simple page-switching logic for a static site
+        function changePage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId + '-page').classList.remove('hidden');
+            document.getElementById(pageId + '-page').classList.add('active');
+
+            // Re-run initialization for page-specific elements (like leaderboard)
+            if (pageId === 'leaderboard') {
+                renderLeaderboard();
+            }
+        }
+
+        // Handle URL Hash navigation
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1) || 'home';
+            changePage(hash);
+        });
+
+        // Initialize on load to handle the starting page
+        document.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.substring(1) || 'home';
+            changePage(hash);
+        });
+    </script>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
