@@ -15,7 +15,7 @@ function calculatePoints(rank, totalLevels) {
     return Math.round(scaledPoints);
 }
 
-// Function to calculate the mean enjoyment from victors (ignoring N/A)
+// Function to calculate the mean EDEL enjoyment from victors (ignoring N/A)
 function calculateMeanEnjoyment(levelName) {
     const validEnjoyments = VICTOR_COMPLETIONS
         .filter(v => v.level === levelName && v.enjoyment !== null && v.enjoyment !== undefined && !isNaN(parseFloat(v.enjoyment)))
@@ -84,8 +84,6 @@ function displayLevelDetails(level) {
     if (!detailsContainer || !victorsContainer) return;
 
     // Determine simplified endscreen death status:
-    // If 'Possible', it means the endscreen is NOT safe (i.e., NO to "Safe Endscreen").
-    // If 'Impossible', it means the endscreen IS safe (i.e., YES to "Safe Endscreen").
     const endscreenStatusValue = level.endscreenDeath === 'Possible' ? 'No' : 'Yes';
     
     // A. Update Level Details (Center Column)
@@ -104,7 +102,7 @@ function displayLevelDetails(level) {
             <p><strong>FHLL Points:</strong> ${level.points}</p>
         </div>
         <div class="level-info-row bottom-row">
-            <p><strong>GDDL Enjoyment:</strong> ${level.enjoyment}</p>
+            <p><strong>EDEL Enjoyment:</strong> ${level.enjoyment}</p>
             <p><strong>Top 1 Date:</strong> ${level.dateAsTop1}</p>
             <p>
                 <strong>Safe Endscreen:</strong> 
@@ -114,11 +112,11 @@ function displayLevelDetails(level) {
     `;
 
     // B. Update Victors List (Right Column) - Filter out the verifier from the victor list
-    // Get the name of the verifier for the current level
     const verifierName = level.verifier;
 
     const levelVictors = VICTOR_COMPLETIONS.filter(v => v.level === level.name && v.player !== verifierName)
                                            .sort((a, b) => {
+                                                // Sort by date chronologically
                                                 if (a.date && b.date) {
                                                     return new Date(a.date) - new Date(b.date);
                                                 }
@@ -187,7 +185,6 @@ function calculateLeaderboard() {
 
         // SKIP if the player is the verifier for this specific level (avoid double counting/override)
         if (player === verifier) {
-            // Note: The verifier already received points in step 1.
             return;
         }
 
@@ -307,25 +304,25 @@ function setupSubmitPage() {
     // Initial check (in case Acheron is default selected, or no level selected)
     levelSelect.dispatchEvent(new Event('change'));
 
-    // Setup enjoyment input change listener for decimal enforcement
-    const enjoymentInput = document.getElementById('enjoyment');
-    enjoymentInput.addEventListener('change', (e) => {
+    // Setup Best Run Percentage input change listener for integer enforcement
+    const bestRunInput = document.getElementById('best-run'); // Targeting the new ID
+    bestRunInput.addEventListener('change', (e) => {
         const value = e.target.value;
-        const floatValue = parseFloat(value);
+        const intValue = parseInt(value);
 
         if (value === "") {
-            // Allow empty string if not required
+            // Allow empty string if not provided
             return; 
         }
 
-        if (isNaN(floatValue) || floatValue < 0 || floatValue > 10) {
-             alert("Enjoyment must be a number between 0.0 and 10.0.");
+        if (isNaN(intValue) || intValue < 0 || intValue > 100) {
+             alert("Best Run Percentage must be a whole number between 0 and 100.");
              e.target.value = "";
              return;
         }
 
-        // Enforce X.X format
-        e.target.value = floatValue.toFixed(1);
+        // Ensure it's stored as an integer string (e.g., "98", not "98.0")
+        e.target.value = intValue.toString();
     });
 
     // Setup submission form handler (currently just an alert)
