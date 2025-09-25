@@ -187,6 +187,13 @@
     </main>
 
     <script>
+        var submitted = false;
+        
+        // This makes sure the alert pops up after the form has been sent.
+        document.querySelector('.submission-form').addEventListener('submit', function() {
+            submitted = true;
+        });
+
         // Simple page-switching logic for a static site
         function changePage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
