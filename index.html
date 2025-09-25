@@ -21,7 +21,7 @@
 
     <main id="content">
         <section id="home-page" class="page active centered-page">
-                        
+                                    
             <div class="welcome-box">
                 <h1 class="welcome-title">WELCOME TO THE FHLL!</h1>
                 <p class="welcome-text">
@@ -93,64 +93,57 @@
                     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
                         onload="if(submitted) {alert('Record submitted successfully and sent for review!'); submitted=false;}"></iframe>
                     
-                    <div class="form-row-group">
-                        <div class="form-row">
-                            <label for="submit-level-select">Level: <span class="required-asterisk">*</span></label>
-                            <select id="submit-level-select" name="entry.440263640" required>
-                                <option value="">Select a Level</option>
-                            </select>
-                        </div>
-                                            
-                        <div class="form-row">
-                            <label for="completion-link">Completion Link: <span class="required-asterisk">*</span></label>
-                            <input type="url" id="completion-link" name="entry.550186591" placeholder="Video link to your completion" required>
-                        </div>
+                    <div class="form-row">
+                        <label for="submit-level-select">Level: <span class="required-asterisk">*</span></label>
+                        <select id="submit-level-select" name="entry.440263640" required>
+                            <option value="">Select a Level</option>
+                        </select>
                     </div>
-                    <div class="form-row-group">
-                        <div class="form-row">
-                            <label for="player-name">Username: <span class="required-asterisk">*</span></label>
-                            <input type="text" id="player-name" name="entry.1118671343" placeholder="Your Username" required>
-                        </div>
-    
-                        <div class="form-row">
-                            <label for="device">Device: <span class="required-asterisk">*</span></label>
-                            <select id="device" name="entry.1691349890" required>
-                                <option>PC</option>
-                                <option>Mobile</option>
-                            </select>
-                        </div>
+                                        
+                    <div class="form-row">
+                        <label for="completion-link">Completion Link: <span class="required-asterisk">*</span></label>
+                        <input type="url" id="completion-link" name="entry.550186591" placeholder="Video link to your completion" required>
                     </div>
 
-                    <div class="form-row-group">
-                        <div class="form-row">
-                            <label for="level-id">Level ID (Optional):</label>
-                            <input type="text" id="level-id" name="entry.1706240294" placeholder="ID of the LDM/Bugfix if used">
-                        </div>
-    
-                        <div class="form-row" id="raw-footage-row">
-                            <label for="raw-footage">Raw Footage (Optional):</label>
-                            <input type="url" id="raw-footage" name="entry.122849927" placeholder="Link to your raw footage (Drive/Dropbox/etc.)">
-                        </div>
+                    <div class="form-row">
+                        <label for="player-name">Username: <span class="required-asterisk">*</span></label>
+                        <input type="text" id="player-name" name="entry.1118671343" placeholder="Your Username" required>
                     </div>
 
-                    <div class="form-row-group">
-                        <div class="form-row">
-                            <label for="best-run">Best Run Percentage (0-100):</label>
-                            <input type="number" id="best-run" name="entry.111623321" min="0" max="100" placeholder="e.g. 98 or N/A">
-                        </div>
-    
-                        <div class="form-row">
-                            <label for="menu">Mod Menu: <span class="required-asterisk">*</span></label>
-                            <select id="menu" name="entry.1607590212" required>
-                                <option>No Mod Menu</option>
-                                <option>Mega Hack</option>
-                                <option>QOLMod</option>
-                                <option>Eclipse</option>
-                                <option>iCreate</option>
-                                <option>Prism</option>
-                                <option>Other (Specify In Notes)</option>
-                            </select>
-                        </div>
+                    <div class="form-row">
+                        <label for="device">Device: <span class="required-asterisk">*</span></label>
+                        <select id="device" name="entry.1691349890" required>
+                            <option>PC</option>
+                            <option>Mobile</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="level-id">Level ID (Optional):</label>
+                        <input type="text" id="level-id" name="entry.1706240294" placeholder="ID of the LDM/Bugfix if used">
+                    </div>
+
+                    <div class="form-row" id="raw-footage-row">
+                        <label for="raw-footage">Raw Footage (Optional):</label>
+                        <input type="url" id="raw-footage" name="entry.122849927" placeholder="Link to your raw footage (Drive/Dropbox/etc.)">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="best-run">Best Run Percentage (0-100):</label>
+                        <input type="number" id="best-run" name="entry.111623321" min="0" max="100" placeholder="e.g. 98 or N/A">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="menu">Mod Menu: <span class="required-asterisk">*</span></label>
+                        <select id="menu" name="entry.1607590212" required>
+                            <option>No Mod Menu</option>
+                            <option>Mega Hack</option>
+                            <option>QOLMod</option>
+                            <option>Eclipse</option>
+                            <option>iCreate</option>
+                            <option>Prism</option>
+                            <option>Other (Specify In Notes)</option>
+                        </select>
                     </div>
 
                     <div class="form-row full-width">
@@ -186,6 +179,11 @@
                 </ul>
                 <p class="staff-contact">For any questions regarding a submission, please contact the staff via Discord.</p>
             </div>
+        </section>
+
+        <section id="profile-page" class="page hidden top-middle-centered-page">
+            <h1>Player Profile</h1>
+            <p>This section is reserved for future updates and will dynamically display a player's statistics, hardest completions, and list ranking.</p>
         </section>
     </main>
 
