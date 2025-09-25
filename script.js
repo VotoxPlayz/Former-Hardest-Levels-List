@@ -275,6 +275,9 @@ function setupSubmitPage() {
 
     if (!levelSelect) return;
 
+    // FIX: Clear the dropdown before populating it again to prevent duplicates
+    levelSelect.innerHTML = '<option value="">Select a Level</option>';
+
     // Populate the dropdown with levels from the list
     processedLevels.forEach(level => {
         const option = document.createElement('option');
