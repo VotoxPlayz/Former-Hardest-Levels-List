@@ -522,3 +522,23 @@ nav a:hover {
     /* Ensures the actual select box fills the container width */
     width: 100%;
 }
+/* CSS for Two-Column Form Structure */
+.submission-form .form-row-group {
+    display: grid;
+    /* Create two equal columns */
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px; /* Space between the two columns */
+    margin-bottom: 20px; /* Space below the group */
+}
+
+/* Ensure the full-width elements still span across both columns */
+.submission-form .full-width {
+    grid-column: 1 / -1;
+}
+
+/* Ensure the fields inside each row take 100% of their column space */
+.submission-form .form-row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
