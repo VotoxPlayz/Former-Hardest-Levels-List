@@ -17,7 +17,7 @@ const LEVEL_DATA = [
         dateAsTop1: "N/A", 
         endscreenDeath: "Impossible", // Use "Impossible" for Safe, "Possible" for Not Safe
         publisher: "UNarwall",
-        edelEnjoyment: N/A // The official EDEL rating for the level
+        edelEnjoyment: null // The official EDEL rating for the level
     },
     {
         name: "Thinking Space II",
@@ -41,7 +41,7 @@ const LEVEL_DATA = [
         dateAsTop1: "N/A",
         endscreenDeath: "Impossible",
         publisher: "wPopoff",
-        edelEnjoyment: N/A
+        edelEnjoyment: null
     },
     {
         name: "Tidal Wave",
