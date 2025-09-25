@@ -21,7 +21,6 @@
 
     <main id="content">
         <section id="home-page" class="page active centered-page">
-                                    
             <div class="welcome-box">
                 <h1 class="welcome-title">WELCOME TO THE FHLL!</h1>
                 <p class="welcome-text">
@@ -50,13 +49,13 @@
 
         <section id="list-page" class="page hidden list-layout">
             <div id="level-list-sidebar" class="sidebar">
-                </div>
+            </div>
 
             <div id="level-details-container" class="level-details">
-                </div>
+            </div>
 
             <div id="level-victors-list" class="sidebar victors-sidebar">
-                </div>
+            </div>
         </section>
 
         <section id="leaderboard-page" class="page hidden">
@@ -72,10 +71,10 @@
                     </tr>
                 </thead>
                 <tbody id="leaderboard-body">
-                    </tbody>
+                </tbody>
             </table>
             <div id="leaderboard-pagination" class="pagination-controls">
-                </div>
+            </div>
         </section>
 
         <section id="submit-page" class="page hidden submit-layout">
@@ -84,22 +83,22 @@
                     <h2>RECORD SUBMISSION</h2>
                     <p class="submission-queue">There are currently 0 submissions in the queue.</p>
                 </div>
-                                
-                <form class="submission-form" 
-                    action="https://docs.google.com/forms/d/e/1FAIpQLSeu3g2d-g65_7n1T4t2pQ7pQ7-9h-9_g7p/formResponse" 
-                    method="POST" 
-                    target="hidden_iframe"> 
+                
+                <form class="submission-form" 
+                    action="https://docs.google.com/forms/d/e/1FAIpQLSeu3g2d-g65_7n1T4t2pQ7pQ7-9h-9_g7p/formResponse" 
+                    method="POST" 
+                    target="hidden_iframe"> 
 
-                    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
+                    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
                         onload="if(submitted) {alert('Record submitted successfully and sent for review!'); submitted=false;}"></iframe>
                     
                     <div class="form-row">
                         <label for="submit-level-select">Level: <span class="required-asterisk">*</span></label>
-                        <select id="submit-level-select" name="entry.440263640" required>
+                        <select id="submit-level-select" name="entry.1706240294" required>
                             <option value="">Select a Level</option>
                         </select>
                     </div>
-                                        
+                    
                     <div class="form-row">
                         <label for="completion-link">Completion Link: <span class="required-asterisk">*</span></label>
                         <input type="url" id="completion-link" name="entry.550186591" placeholder="Video link to your completion" required>
@@ -120,7 +119,7 @@
 
                     <div class="form-row">
                         <label for="level-id">Level ID (Optional):</label>
-                        <input type="text" id="level-id" name="entry.1706240294" placeholder="ID of the LDM/Bugfix if used">
+                        <input type="text" id="level-id" name="entry.440263640" placeholder="ID of the LDM/Bugfix if used">
                     </div>
 
                     <div class="form-row" id="raw-footage-row">
@@ -202,7 +201,10 @@
 
             // Re-run initialization for page-specific elements
             if (pageId === 'leaderboard') {
-                renderLeaderboard(1);
+                // Check if the script exists before calling the function
+                if (typeof renderLeaderboard === 'function') {
+                    renderLeaderboard(1);
+                }
             }
         }
 
