@@ -1,76 +1,80 @@
 // data.js
 
-// --- 1. LEVELS DATA ---
-// NOTE: Levels must be listed in order of difficulty (Current #1 down to #55).
-// The POINTS will be calculated automatically based on this order.
-// enjoyment: The value here is a placeholder and will be overwritten by the mean calculation.
-
+/**
+ * FHLL Levels Data
+ * NOTE: The script calculates FHLL Points and EDEL Enjoyment (mean) dynamically.
+ * The 'edelEnjoyment' value in this object represents the single official
+ * EDEL enjoyment score if one exists, otherwise null/N/A.
+ */
 const LEVEL_DATA = [
     {
-        name: "Thinking Space II",
-        creator: "CairoX",
+        name: "Acheron",
+        creator: "Renn241",
         verifier: "Zoink",
-        id: "119544028",
-        video: "https://www.youtube.com/watch?v=CELNmHwln_c",
-        description: "A mindscape of pure insanity, most fall to its brutal nature. Gameplay by CoCy team, deco hosted by DrCuber, Verified by Zoink. Dedicated to Hideki <3",
-        dateAsTop1: "N/A", // Example date
-        endscreenDeath: "Yes", // New field
-        publisher: "CairoX" // Using 'creator' for design, 'publisher' for list data
+        id: "87000000",
+        video: "https://www.youtube.com/watch?v=ACHERON_VIDEO_ID",
+        description: "The current hardest level in Geometry Dash.",
+        dateAsTop1: "2023-01-20", 
+        endscreenDeath: "Impossible", // Use "Impossible" for Safe, "Possible" for Not Safe
+        publisher: "Renn241",
+        edelEnjoyment: 7.5 // The official EDEL rating for the level
     },
     {
-        name: "Tidal Wave buffed",
-        creator: "OniLinkGD",
-        verifier: "wPopoff",
-        id: "116732736",
-        video: "https://m.youtube.com/watch?v=1-ihSeRCpds",
-        description: "April fools but real!",
-        dateAsTop1: "N/A",
-        endscreenDeath: "Yes",
-        publisher: "wPopoff"
+        name: "Slaughterhouse",
+        creator: "RazorBlade",
+        verifier: "Trueffet",
+        id: "75000000",
+        video: "https://www.youtube.com/watch?v=SLAUGHTERHOUSE_VIDEO_ID",
+        description: "A dark, intense, and heavily decorated extreme demon.",
+        dateAsTop1: "2021-08-25",
+        endscreenDeath: "Possible",
+        publisher: "RazorBlade",
+        edelEnjoyment: 6.8
     },
     {
-        name: "Tidal Wave",
-        creator: "OniLinkGD",
-        verifier: "Zoink",
-        id: "86407629",
-        video: "https://youtu.be/9fsZ014qB3s?si=PrZssw-Ly_4KvLZ0&t=2",
-        description: "Drown them",
-        dateAsTop1: "2024-02-18",
-        endscreenDeath: "Yes",
-        publisher: "OniLinkGD"
+        name: "Tartarus",
+        creator: "Dolphyd",
+        verifier: "Trusta",
+        id: "58000000",
+        video: "https://www.youtube.com/watch?v=TARTARUS_VIDEO_ID",
+        description: "The epic conclusion to the Challenge list, featuring red and black visuals.",
+        dateAsTop1: "2019-12-30",
+        endscreenDeath: "Impossible",
+        publisher: "Dolphyd",
+        edelEnjoyment: 8.0
     },
     {
-        name: "Silent clubstep",
-        creator: "TheRealSailent",
-        verifier: "Paqoe",
-        id: "4125776",
-        video: "https://youtu.be/GR4OMkS3SN8?si=-4h_hz6ZhiLdISka&t=4",
-        description: "7 years and you still play me?!",
-        dateAsTop1: "N/A",
-        endscreenDeath: "No",
-        publisher: "TheRealSailent"
+        name: "Bloodbath",
+        creator: "Acropolis",
+        verifier: "Riot",
+        id: "27000000",
+        video: "https://www.youtube.com/watch?v=BLOODBATH_VIDEO_ID",
+        description: "The most famous extreme demon, known for its iconic red and black theme.",
+        dateAsTop1: "2015-08-11",
+        endscreenDeath: "Impossible",
+        publisher: "Acropolis",
+        edelEnjoyment: 9.5
     },
-    {
-        name: "Avernus",
-        creator: "PockeWindfish",
-        verifier: "Zoink",
-        id: "89496627",
-        video: "https://youtu.be/16Zh8jssanc",
-        description: "By Bo & Kyhros - https://discord.gg/YcNkfHMJGv",
-        dateAsTop1: "2023-10-16",
-        endscreenDeath: "Yes",
-        publisher: "OniLinkGD"
-    },
-    // ... You will add the other 51 former hardest levels here ...
+    // Add more levels here with the new, consistent structure
 ];
 
-// --- 2. VICTOR COMPLETIONS DATA ---
-// Each entry is a successful completion of a level on the list.
-// NOTE: 'enjoyment' is now crucial here (0.0 to 10.0 or null/undefined for N/A)
-
+/**
+ * Record Submissions (Victors) Data
+ * NOTE: 'date' is used for sorting the victor list chronologically.
+ * 'enjoyment' is used for the EDEL Enjoyment mean calculation (if a number).
+ */
 const VICTOR_COMPLETIONS = [
-    // Format: { player: "USERNAME", level: "LEVEL NAME", date: "YYYY-MM-DD", video: "YOUTUBE_LINK", enjoyment: "X.X" }
-    { player: "NO", level: "no", date: "2023-01-20", video: "https://www.youtube.com/watch?v=ZOINK_ACHERON", enjoyment: "9.5" },
-    // N/A enjoyment
-    // ... Add all other victor completions here ...
+    // Acheron Victors
+    { player: "PlayerA", level: "Acheron", video: "https://www.youtube.com/watch?v=PLA_ACH", date: "2024-03-01", enjoyment: 9.2 },
+    { player: "PlayerB", level: "Acheron", video: "https://www.youtube.com/watch?v=PLB_ACH", date: "2024-03-05", enjoyment: 8.8 },
+
+    // Slaughterhouse Victors
+    { player: "PlayerC", level: "Slaughterhouse", video: "https://www.youtube.com/watch?v=PLC_SLH", date: "2022-01-01", enjoyment: 7.0 },
+    
+    // Tartarus Victors
+    { player: "PlayerD", level: "Tartarus", video: "https://www.youtube.com/watch?v=PLD_TAR", date: "2020-03-01", enjoyment: 8.5 },
+    
+    // Bloodbath Victors - Riot (Verifier) should not be listed here if he verified it.
+    { player: "PlayerE", level: "Bloodbath", video: "https://www.youtube.com/watch?v=PLE_BLB", date: "2015-09-01", enjoyment: 9.0 },
+    { player: "PlayerF", level: "Bloodbath", video: "https://www.youtube.com/watch?v=PLF_BLB", date: "2015-09-05", enjoyment: 8.9 },
 ];
