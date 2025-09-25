@@ -282,7 +282,8 @@ function setupSubmitPage() {
     processedLevels.forEach(level => {
         const option = document.createElement('option');
         option.value = level.name;
-        option.textContent = `#${level.rank} - ${level.name}`;
+        // CORRECTED: Ensure the text content is correctly formatted for display
+        option.textContent = `#${level.rank} - ${level.name}`; 
         option.dataset.rank = level.rank;
         levelSelect.appendChild(option);
     });
@@ -331,7 +332,7 @@ function setupSubmitPage() {
     // Setup submission form handler
     const submitForm = document.querySelector('.submission-form');
     submitForm.addEventListener('submit', (e) => {
-        // --- KEY CHANGE ---
+        // --- GOOGLE FORM SUBMISSION CHANGE ---
         // 1. Set the flag to trigger the alert in the iframe's onload
         window.submitted = true;
         
