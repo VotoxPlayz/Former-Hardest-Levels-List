@@ -85,17 +85,17 @@ function displayLevelDetails(level) {
 
     // Determine simplified endscreen death status:
     const endscreenStatusValue = level.endscreenDeath === 'Possible' ? 'No' : 'Yes';
-    
+     
     // A. Update Level Details (Center Column)
     detailsContainer.innerHTML = `
         <h2 class="level-title">${level.name} // <span class="level-verifier">Verified by ${level.verifier}</span></h2>
-        
+         
         <p class="level-description"><strong>${level.description}</strong></p>
 
         <div class="video-placeholder">
             <iframe src="${level.video.replace('watch?v=', 'embed/').split('&')[0]}" frameborder="0" allowfullscreen></iframe>
         </div>
-        
+         
         <div class="level-info-row top-row">
             <p><strong>Level ID:</strong> ${level.id}</p>
             <p><strong>Publisher:</strong> ${level.publisher}</p>
@@ -105,7 +105,7 @@ function displayLevelDetails(level) {
             <p><strong>EDEL Enjoyment:</strong> ${level.enjoyment}</p>
             <p><strong>Top 1 Date:</strong> ${level.dateAsTop1}</p>
             <p>
-                <strong>Safe Endscreen:</strong> 
+                <strong>Safe Endscreen:</strong> 
                 ${endscreenStatusValue}
             </p>
         </div>
@@ -116,11 +116,11 @@ function displayLevelDetails(level) {
 
     const levelVictors = VICTOR_COMPLETIONS.filter(v => v.level === level.name && v.player !== verifierName)
                                            .sort((a, b) => {
-                                                // Sort by date chronologically
-                                                if (a.date && b.date) {
-                                                    return new Date(a.date) - new Date(b.date);
-                                                }
-                                                return 0;
+                                               // Sort by date chronologically
+                                               if (a.date && b.date) {
+                                                   return new Date(a.date) - new Date(b.date);
+                                               }
+                                               return 0;
                                            });
 
     victorsContainer.innerHTML = `
@@ -133,7 +133,7 @@ function displayLevelDetails(level) {
 
     levelVictors.forEach(victor => {
         const victorItem = document.createElement('div');
-        victorItem.className = 'victor-item-no-enjoyment'; 
+        victorItem.className = 'victor-item-no-enjoyment'; 
         victorItem.innerHTML = `
             <span class="victor-name">${victor.player}</span>
             <a href="${victor.video}" target="_blank" class="victor-video-link right-text">▶️</a>
@@ -147,15 +147,15 @@ function displayLevelDetails(level) {
 let calculatedLeaderboard = [];
 
 function calculateLeaderboard() {
-    const playerScores = {}; 
+    const playerScores = {}; 
 
     // Helper function to initialize player data structure
     const initPlayer = (player) => {
         if (!playerScores[player]) {
-            playerScores[player] = { 
-                points: 0, 
-                levelsBeaten: new Set(), 
-                hardestLevel: { name: "", points: 0 } 
+            playerScores[player] = { 
+                points: 0, 
+                levelsBeaten: new Set(), 
+                hardestLevel: { name: "", points: 0 } 
             };
         }
     };
@@ -189,7 +189,7 @@ function calculateLeaderboard() {
         }
 
         initPlayer(player);
-        
+         
         // Add points for beating the level (as a victor)
         playerScores[player].points += level.points;
         playerScores[player].levelsBeaten.add(level.name);
@@ -210,9 +210,9 @@ function calculateLeaderboard() {
     // Sort by: 1. Points (descending), 2. Hardest Level Points (descending)
     leaderboard.sort((a, b) => {
         if (b.points !== a.points) {
-            return b.points - a.points; 
+            return b.points - a.points; 
         }
-        return b.hardestLevel.points - a.hardestLevel.points; 
+        return b.hardestLevel.points - a.hardestLevel.points; 
     });
 
     calculatedLeaderboard = leaderboard;
@@ -223,12 +223,12 @@ function renderLeaderboard(page = 1) {
     if (processedLevels.length === 0) {
         initializeList();
     }
-    
+     
     // Ensure leaderboard is calculated before rendering
     if (calculatedLeaderboard.length === 0) {
         calculateLeaderboard();
     }
-    
+     
     currentPage = page;
     const leaderboardBody = document.getElementById('leaderboard-body');
     const paginationControls = document.getElementById('leaderboard-pagination');
@@ -291,7 +291,7 @@ function setupSubmitPage() {
     levelSelect.addEventListener('change', () => {
         const selectedOption = levelSelect.options[levelSelect.selectedIndex];
         const rank = parseInt(selectedOption.dataset.rank);
-        
+         
         // Raw footage required for Top 15
         const isTop15 = rank > 0 && rank <= 15;
 
@@ -303,7 +303,7 @@ function setupSubmitPage() {
             rawFootageInput.required = false;
         }
     });
-    
+     
     // Initial check (in case Acheron is default selected, or no level selected)
     levelSelect.dispatchEvent(new Event('change'));
 
@@ -315,7 +315,7 @@ function setupSubmitPage() {
 
         if (value === "") {
             // Allow empty string if not provided
-            return; 
+            return; 
         }
 
         if (isNaN(intValue) || intValue < 0 || intValue > 100) {
@@ -328,12 +328,18 @@ function setupSubmitPage() {
         e.target.value = intValue.toString();
     });
 
-    // Setup submission form handler (currently just an alert)
+    // Setup submission form handler
     const submitForm = document.querySelector('.submission-form');
     submitForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert("Submission captured! In a live site, this data would be sent to a backend/spreadsheet for review.");
-        // You would typically collect form data here and send it off.
+        // --- KEY CHANGE ---
+        // 1. Set the flag to trigger the alert in the iframe's onload
+        window.submitted = true;
+        
+        // 2. We are REMOVING e.preventDefault() to allow the form to submit to Google Forms.
+        // e.preventDefault(); 
+        
+        // In a live site, no other action is needed here besides setting the flag.
+        // The form handles the submission, and the iframe handles the feedback.
     });
 }
 
