@@ -55,6 +55,30 @@ const LEVEL_DATA = [
         publisher: "OniLinkGD",
         edelEnjoyment: 7.5
     },
+    {
+        name: "Silent clubstep",
+        creator: "TheRealSailent",
+        verifier: "Paqoe",
+        id: "4125776",
+        video: "https://www.youtube.com/watch?v=GR4OMkS3SN8",
+        description: "7 years and you still play me?!",
+        dateAsTop1: "N/A",
+        endscreenDeath: "Possible",
+        publisher: "TheRealSailent",
+        edelEnjoyment: 3.67
+    },
+    {
+        name: "Avernus",
+        creator: "PockeWindfish",
+        verifier: "Zoink",
+        id: "89496627",
+        video: "https://www.youtube.com/watch?v=16Zh8jssanc",
+        description: "By Bo & Kyhros - https://discord.gg/YcNkfHMJGv",
+        dateAsTop1: "2023-10-16",
+        endscreenDeath: "Possible",
+        publisher: "TheRealSailent",
+        edelEnjoyment: 8.14
+    },
     // Add more levels here with the new, consistent structure
 ];
 
