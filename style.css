@@ -425,9 +425,11 @@ nav a:hover {
     color: #aaa;
 }
 
+/* CORRECTED GRID STRUCTURE */
 .submission-form {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    /* This defines two equal columns for the form fields */
+    grid-template-columns: 1fr 1fr; 
     gap: 15px;
 }
 
@@ -437,8 +439,10 @@ nav a:hover {
 }
 
 .form-row.full-width {
+    /* Ensures notes/buttons/notices span both columns */
     grid-column: 1 / -1; 
 }
+/* END CORRECTED GRID STRUCTURE */
 
 .submission-form label {
     margin-bottom: 5px;
@@ -507,38 +511,7 @@ nav a:hover {
     max-width: 600px;
     line-height: 1.6;
 }
-/* CSS Fix for Level Select box alignment */
-.submission-form .single-column-row {
-    /* Forces the element to span all columns in a grid layout */
-    grid-column: 1 / -1; 
-    
-    /* Ensures the row content is vertically stacked and takes 100% width */
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.submission-form .single-column-row select {
-    /* Ensures the actual select box fills the container width */
-    width: 100%;
-}
-/* CSS for Two-Column Form Structure */
-.submission-form .form-row-group {
-    display: grid;
-    /* Create two equal columns */
-    grid-template-columns: 1fr 1fr; 
-    gap: 20px; /* Space between the two columns */
-    margin-bottom: 20px; /* Space below the group */
-}
-
-/* Ensure the full-width elements still span across both columns */
-.submission-form .full-width {
-    grid-column: 1 / -1;
-}
-
-/* Ensure the fields inside each row take 100% of their column space */
-.submission-form .form-row {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
+/* REMOVED: Old, incorrect CSS fixes for single-column rows */
+/* .submission-form .single-column-row { ... } */
+/* .submission-form .single-column-row select { ... } */
+/* .submission-form .form-row-group { ... } */
