@@ -35,6 +35,12 @@ let processedLevels = [];
 let currentPage = 1;
 
 function initializeList() {
+    // Check if LEVEL_DATA exists (from data.js)
+    if (typeof LEVEL_DATA === 'undefined' || LEVEL_DATA.length === 0) {
+        console.error("LEVEL_DATA is not defined or is empty. Cannot initialize list.");
+        return;
+    }
+
     const totalLevels = LEVEL_DATA.length;
 
     // 1. Calculate points for each level and store them, including mean enjoyment
@@ -234,9 +240,6 @@ function renderLeaderboard(page = 1) {
     const paginationControls = document.getElementById('leaderboard-pagination');
     if (!leaderboardBody || !paginationControls) return;
 
-    leaderboardBody.innerHTML = '';
-    paginationControls.innerHTML = '';
-
     const totalPlayers = calculatedLeaderboard.length;
     const totalPages = Math.ceil(totalPlayers / PLAYERS_PER_PAGE);
     const start = (page - 1) * PLAYERS_PER_PAGE;
@@ -244,6 +247,7 @@ function renderLeaderboard(page = 1) {
 
     const playersToShow = calculatedLeaderboard.slice(start, end);
 
+    leaderboardBody.innerHTML = '';
     playersToShow.forEach((player, index) => {
         const globalRank = start + index + 1;
         const row = leaderboardBody.insertRow();
@@ -257,6 +261,7 @@ function renderLeaderboard(page = 1) {
     });
 
     // Render Pagination Controls
+    paginationControls.innerHTML = '';
     for (let i = 1; i <= totalPages; i++) {
         const btn = document.createElement('button');
         btn.textContent = i;
@@ -272,17 +277,15 @@ function setupSubmitPage() {
     const levelSelect = document.getElementById('submit-level-select');
     const rawFootageInput = document.getElementById('raw-footage');
     const rawFootageLabel = document.querySelector('label[for="raw-footage"]');
+    const submitForm = document.querySelector('.submission-form');
 
-    if (!levelSelect) return;
-
-    // FIX: Clear the dropdown before populating it again to prevent duplicates
-    levelSelect.innerHTML = '<option value="">Select a Level</option>';
+    if (!levelSelect || !submitForm) return;
 
     // Populate the dropdown with levels from the list
+    levelSelect.innerHTML = '<option value="">Select a Level</option>';
     processedLevels.forEach(level => {
         const option = document.createElement('option');
         option.value = level.name;
-        // CORRECTED: Ensure the text content is correctly formatted for display
         option.textContent = `#${level.rank} - ${level.name}`; 
         option.dataset.rank = level.rank;
         levelSelect.appendChild(option);
@@ -309,41 +312,43 @@ function setupSubmitPage() {
     levelSelect.dispatchEvent(new Event('change'));
 
     // Setup Best Run Percentage input change listener for integer enforcement
-    const bestRunInput = document.getElementById('best-run'); // Targeting the new ID
-    bestRunInput.addEventListener('change', (e) => {
-        const value = e.target.value;
-        const intValue = parseInt(value);
+    const bestRunInput = document.getElementById('best-run');
+    if (bestRunInput) {
+        bestRunInput.addEventListener('change', (e) => {
+            const value = e.target.value;
+            const intValue = parseInt(value);
+    
+            if (value === "") {
+                return;
+            }
+    
+            if (isNaN(intValue) || intValue < 0 || intValue > 100) {
+                 alert("Best Run Percentage must be a whole number between 0 and 100.");
+                 e.target.value = "";
+                 return;
+            }
+    
+            e.target.value = intValue.toString();
+        });
+    }
 
-        if (value === "") {
-            // Allow empty string if not provided
-            return; 
-        }
-
-        if (isNaN(intValue) || intValue < 0 || intValue > 100) {
-             alert("Best Run Percentage must be a whole number between 0 and 100.");
-             e.target.value = "";
-             return;
-        }
-
-        // Ensure it's stored as an integer string (e.g., "98", not "98.0")
-        e.target.value = intValue.toString();
-    });
-
-    // Setup submission form handler
-    const submitForm = document.querySelector('.submission-form');
+    // --- GOOGLE FORM SUBMISSION FIX ---
+    // The previous code had a submit handler that might conflict with the natural form submission.
+    // We only need the code to set the flag, which is handled in the hidden iframe's 'onload' attribute in the HTML.
+    // We will *remove* the event listener entirely to ensure the browser submits the form normally
+    // to the Google Forms action URL defined in the HTML.
+    // We only re-add it to set the 'submitted' flag *before* the form submits.
+    
     submitForm.addEventListener('submit', (e) => {
-        // --- GOOGLE FORM SUBMISSION CHANGE ---
-        // 1. Set the flag to trigger the alert in the iframe's onload
+        // Set a global flag that the hidden iframe will check when it loads
+        // the success page from Google Forms, triggering the alert.
         window.submitted = true;
         
-        // 2. We are REMOVING e.preventDefault() to allow the form to submit to Google Forms.
-        // e.preventDefault(); 
-        
-        // In a live site, no other action is needed here besides setting the flag.
-        // The form handles the submission, and the iframe handles the feedback.
+        // IMPORTANT: DO NOT call e.preventDefault();
+        // Allow the form to submit naturally to Google Forms via the 'action' attribute.
     });
-}
 
+}
 
 // Ensure the initialize function runs once the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', initializeList);
