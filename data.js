@@ -46,7 +46,7 @@ const LEVEL_DATA = [
     {
         name: "Tidal Wave",
         creator: "OniLinkGD",
-        verifier: "Riot",
+        verifier: "Zoink",
         id: "86407629",
         video: "https://www.youtube.com/watch?v=9fsZ014qB3s", 
         description: "Drown them",
@@ -76,7 +76,7 @@ const LEVEL_DATA = [
         description: "By Bo & Kyhros - https://discord.gg/YcNkfHMJGv",
         dateAsTop1: "2023-10-16",
         endscreenDeath: "Possible",
-        publisher: "TheRealSailent",
+        publisher: "PockeWindfish",
         edelEnjoyment: 8.14
     },
     // Add more levels here with the new, consistent structure
