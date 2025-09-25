@@ -507,3 +507,18 @@ nav a:hover {
     max-width: 600px;
     line-height: 1.6;
 }
+/* CSS Fix for Level Select box alignment */
+.submission-form .single-column-row {
+    /* Forces the element to span all columns in a grid layout */
+    grid-column: 1 / -1; 
+    
+    /* Ensures the row content is vertically stacked and takes 100% width */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.submission-form .single-column-row select {
+    /* Ensures the actual select box fills the container width */
+    width: 100%;
+}
