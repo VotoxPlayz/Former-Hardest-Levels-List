@@ -49,6 +49,7 @@ const LEVEL_DATA = [
         verifier: "Riot",
         id: "86407629",
         video: "https://www.youtube.com/watch?v=9fsZ014qB3s", 
+        description: "Drown them",
         dateAsTop1: "2024-02-18",
         endscreenDeath: "Impossible",
         publisher: "OniLinkGD",
