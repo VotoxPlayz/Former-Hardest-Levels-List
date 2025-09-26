@@ -14,11 +14,10 @@ function processLevelData() {
             const rank = index + 1;
 
             // 1. Assign Rank.
-            // 2. Assign a default fhllPoints field if it doesn't exist. This is the field 
-            //    used everywhere else for consistency, assuming your external calculation will populate it.
+            // 2. Assign a default fhllPoints field if it doesn't exist.
             const fhllPoints = level.fhllPoints || 0; 
             
-            // 3. Merge Victors from VICTOR_COMPLETIONS (assumes VICTOR_COMPLETIONS is defined in data.js)
+            // 3. Merge Victors from VICTOR_COMPLETIONS
             const victors = (typeof VICTOR_COMPLETIONS !== 'undefined' && Array.isArray(VICTOR_COMPLETIONS))
                 ? VICTOR_COMPLETIONS.filter(victor => victor.levelName === level.name)
                 : [];
@@ -39,17 +38,34 @@ function processLevelData() {
  * Sets up the submission page: populates the level dropdown and adds event listeners.
  */
 function setupSubmitPage() {
-    const levelSelect = document.getElementById('submit-level-select');
+    // Make sure this ID matches the <select> element on your submission form
+    const levelSelect = document.getElementById('submit-level-select'); 
     const rawFootageInput = document.getElementById('raw-footage-input'); 
     
-    if (!levelSelect || !rawFootageInput) return;
+    // CRITICAL CHECK: If the elements aren't found, the function stops.
+    if (!levelSelect || !rawFootageInput) {
+        // This is a good place to console.log an error if you're debugging
+        // console.error("Submission page elements not found. Check HTML IDs.");
+        return;
+    }
 
-    // Clear existing options, keeping only the first (Select a Level)
+    // Clear existing options, but keep the first 'Select a Level' option if it exists
     while (levelSelect.options.length > 1) {
         levelSelect.remove(1); 
     }
+    
+    // Ensure 'Select a Level' is the first option and selected
+    if (levelSelect.options.length === 0) {
+        const defaultOption = document.createElement('option');
+        defaultOption.value = "";
+        defaultOption.textContent = "Select a Level";
+        defaultOption.setAttribute('disabled', 'true');
+        defaultOption.setAttribute('selected', 'true');
+        levelSelect.appendChild(defaultOption);
+    }
 
-    // Populate the dropdown
+
+    // Populate the dropdown using the processedLevels data
     processedLevels.forEach(level => {
         const option = document.createElement('option');
         option.value = level.name;
@@ -75,7 +91,8 @@ function handleLevelChange() {
     if (!levelSelect || !rawFootageInput || !rawFootageLabel) return;
     
     const selectedOption = levelSelect.options[levelSelect.selectedIndex];
-    const rank = parseInt(selectedOption.dataset.rank, 10) || 0;
+    // Check if an option is actually selected and has a data-rank attribute
+    const rank = selectedOption ? (parseInt(selectedOption.dataset.rank, 10) || 0) : 0;
     
     // Logic: Raw footage is mandatory for Top 15 (rank 1 to 15)
     if (rank > 0 && rank <= 15) {
@@ -88,7 +105,7 @@ function handleLevelChange() {
 }
 
 // ----------------------------------------------------------------------
-// --- LIST PAGE LOGIC (FIXED) ---
+// --- LIST PAGE LOGIC ---
 // ----------------------------------------------------------------------
 
 function renderLevelList() {
@@ -98,7 +115,6 @@ function renderLevelList() {
 
     if (!sidebar) return;
 
-    // Clear and reset all containers
     sidebar.innerHTML = '<h3>FHLL Levels</h3>';
     detailsContainer.innerHTML = '';
     victorsSidebar.innerHTML = '';
@@ -108,11 +124,9 @@ function renderLevelList() {
         return;
     }
 
-    // Populate the sidebar
     processedLevels.forEach(level => {
         const levelItem = document.createElement('div');
         levelItem.classList.add('level-list-item');
-        // Structure the list item to match the visual in image_6acc0b.png
         levelItem.innerHTML = `<span class="level-rank">#${level.rank} - </span><span class="level-name">${level.name}</span><span class="level-creator">by ${level.creator}</span>`;
         
         levelItem.addEventListener('click', () => {
@@ -123,7 +137,6 @@ function renderLevelList() {
         sidebar.appendChild(levelItem);
     });
 
-    // Automatically click the first level to show its details on initial load
     if (processedLevels.length > 0) {
         const firstItem = document.querySelector('.level-list-item');
         if(firstItem) firstItem.click();
@@ -136,19 +149,14 @@ function renderLevelDetails(level) {
 
     if (!container || !victorsSidebar) return;
     
-    // --- MAPPING AND CLEANING DATA ---
-    // 1. YouTube Link: Convert 'watch' URL to 'embed' URL for the iframe
     const embedUrl = level.video.includes('watch?v=') 
         ? level.video.replace("watch?v=", "embed/") 
         : (level.video.includes("youtu.be/") ? level.video.replace("youtu.be/", "youtube.com/embed/") : level.video);
     
-    // 2. Safe Endscreen: Map "Impossible" to "Yes" and "Possible" to "No"
     const safeEndscreen = level.endscreenDeath === "Impossible" ? "Yes" : "No";
 
-    // 3. EDEL Enjoyment: Display "N/A" if null or 0, otherwise format to two decimal places
     const edelDisplay = level.edelEnjoyment === null || level.edelEnjoyment === 0 ? "N/A" : level.edelEnjoyment.toFixed(2);
     
-    // --- 1. RENDER LEVEL DETAILS (CENTER PANEL) ---
     container.innerHTML = `
         <h3 class="level-title">${level.name} <span class="level-verifier">// Verified by ${level.verifier}</span></h3>
         <p class="level-description">${level.description}</p>
@@ -175,7 +183,6 @@ function renderLevelDetails(level) {
         </div>
     `;
 
-    // --- 2. RENDER VICTOR LIST (RIGHT SIDEBAR) ---
     victorsSidebar.innerHTML = `<h3>Victors (${level.victors.length})</h3>`;
     if (level.victors && level.victors.length > 0) {
         victorsSidebar.innerHTML += `
@@ -184,7 +191,6 @@ function renderLevelDetails(level) {
                 <span class="right-text">Video</span>
             </div>
         `;
-        // Sort victors chronologically by date
         level.victors.sort((a, b) => new Date(a.date) - new Date(b.date));
         
         level.victors.forEach(victor => {
@@ -201,14 +207,13 @@ function renderLevelDetails(level) {
 }
 
 // ----------------------------------------------------------------------
-// --- LEADERBOARD LOGIC (AUTOMATIC CALCULATION RETAINED) ---
+// --- LEADERBOARD LOGIC ---
 // ----------------------------------------------------------------------
 
 function calculateLeaderboardData() {
     const playerStats = {};
 
     processedLevels.forEach(level => {
-        // Use the points provided on the level object (which will be 0 if not calculated/set yet)
         const points = level.fhllPoints || 0; 
         
         // 1. Add points to victors
@@ -220,7 +225,6 @@ function calculateLeaderboardData() {
             playerStats[username].points += points;
             playerStats[username].levelsBeaten += 1;
             
-            // Track Hardest Level (lower rank is harder)
             if (level.rank < playerStats[username].hardestRank) {
                 playerStats[username].hardestLevel = level.name;
                 playerStats[username].hardestRank = level.rank;
@@ -237,24 +241,21 @@ function calculateLeaderboardData() {
         playerStats[verifierUsername].points += verifierPoints;
     });
 
-    // Convert object to array and sort
     let leaderboard = Object.keys(playerStats).map(username => ({
         username: username,
         ...playerStats[username]
     }));
 
-    // Sort: 1. By total points (desc) 2. By levels beaten (desc) 3. By hardest level rank (asc)
     leaderboard.sort((a, b) => {
         if (b.points !== a.points) {
-            return b.points - a.points; // Higher points first
+            return b.points - a.points; 
         }
         if (b.levelsBeaten !== a.levelsBeaten) {
-            return b.levelsBeaten - a.levelsBeaten; // More levels beaten first
+            return b.levelsBeaten - a.levelsBeaten; 
         }
-        return a.hardestRank - b.hardestRank; // Lower rank number is harder
+        return a.hardestRank - b.hardestRank; 
     });
 
-    // Assign final rank
     leaderboard = leaderboard.map((player, index) => ({
         ...player,
         rank: index + 1
@@ -269,7 +270,6 @@ function renderLeaderboard(page = 1) {
     
     if (!leaderboardBody) return;
     
-    // Pagination logic (simplified for now)
     const startIndex = (page - 1) * 10;
     const endIndex = startIndex + 10;
     const paginatedData = leaderboardData.slice(startIndex, endIndex);
@@ -281,7 +281,6 @@ function renderLeaderboard(page = 1) {
         return;
     }
 
-    // Insert data into table rows
     paginatedData.forEach(player => {
         const row = leaderboardBody.insertRow();
         row.insertCell().textContent = player.rank;
@@ -305,15 +304,12 @@ document.addEventListener('DOMContentLoaded', () => {
     changePage(hash); 
 });
 
-// A simple page routing function
 function changePage(pageId) {
-    // Hide all pages
     document.querySelectorAll('.page').forEach(page => {
         page.classList.add('hidden');
         page.classList.remove('active');
     });
     
-    // Show the target page
     const targetPage = document.getElementById(pageId + '-page');
     if (targetPage) {
         targetPage.classList.remove('hidden');
