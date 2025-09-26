@@ -1,7 +1,7 @@
 // script.js
 
 // Global variable to hold the processed, sorted level data
-let processedLevels = [];
+let processedLevels = []; let submitted = false; // Flag to track form submission status
 
 /**
  * Processes the raw LEVEL_DATA, calculates rank, and merges victors.
