@@ -281,15 +281,30 @@ function setupSubmitPage() {
 
     if (!levelSelect || !submitForm) return;
 
+    // *** IMPROVEMENT START ***
+    // Clear existing options efficiently
+    levelSelect.length = 0; 
+    
+    // Add the default "Select a Level" option
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "";
+    defaultOption.textContent = "Select a Level";
+    levelSelect.appendChild(defaultOption);
+    // *** IMPROVEMENT END ***
+
     // Populate the dropdown with levels from the list
-    levelSelect.innerHTML = '<option value="">Select a Level</option>';
     processedLevels.forEach(level => {
         const option = document.createElement('option');
+        // This is the CRUCIAL part for Google Forms submission:
         option.value = level.name;
         option.textContent = `#${level.rank} - ${level.name}`; 
         option.dataset.rank = level.rank;
         levelSelect.appendChild(option);
     });
+    
+    // The rest of your submission logic would go here, 
+    // such as checking the rank for the raw footage requirement.
+}
 
     // Event listener for conditional raw footage requirement
     levelSelect.addEventListener('change', () => {
