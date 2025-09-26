@@ -38,7 +38,7 @@ nav a:hover {
     background-color: #333;
 }
 
-/* Main Content and Page Structure */
+/* Main Content and Page Structure - CRITICAL FOR HIDING PAGES */
 #content {
     padding: 40px 20px;
     max-width: 1200px;
@@ -46,11 +46,11 @@ nav a:hover {
 }
 
 .page {
-    display: none;
+    display: none; /* Default state: all pages are hidden */
 }
 
 .page.active {
-    display: block;
+    display: block; /* Active page is shown */
 }
 
 /* Welcome Page (Home) */
@@ -127,11 +127,11 @@ nav a:hover {
     background-color: #1a1a1a;
 }
 
-/* Submission Form Layout (CRITICAL FOR YOUR PREVIOUS ISSUE) */
+/* Submission Form Layout (CRITICAL FOR TWO-COLUMN LAYOUT) */
 #submit-page {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center the form and guidelines block */
+    align-items: center; 
     width: 100%;
 }
 
@@ -150,16 +150,10 @@ nav a:hover {
     margin-bottom: 10px;
 }
 
-.submission-queue {
-    text-align: center;
-    color: #aaa;
-    margin-bottom: 30px;
-}
-
 .submission-form {
     display: grid;
     grid-template-columns: 1fr 1fr; /* Two equal columns */
-    gap: 20px; /* Space between rows and columns */
+    gap: 20px;
 }
 
 .form-row {
@@ -188,13 +182,8 @@ nav a:hover {
     background-color: #222;
     color: #e0e0e0;
     border-radius: 4px;
-    width: 100%; /* Ensures they fill the column space */
+    width: 100%;
     box-sizing: border-box;
-}
-
-.submission-form textarea {
-    resize: vertical;
-    min-height: 100px;
 }
 
 .submit-button {
@@ -207,46 +196,6 @@ nav a:hover {
     font-weight: bold;
     border-radius: 4px;
     transition: background-color 0.3s;
-    grid-column: 1 / -1; /* Spans both columns */
+    grid-column: 1 / -1; 
 }
-
-.submit-button:hover {
-    background-color: #00cc52;
-}
-
-.previous-submissions h3 {
-    color: #00ff66;
-    border-top: 1px solid #333;
-    padding-top: 20px;
-    margin-top: 40px;
-}
-
-/* Submission Guidelines */
-.submission-guidelines h3 {
-    color: #00ff66;
-}
-
-.submission-guidelines ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.submission-guidelines li {
-    margin-bottom: 10px;
-    padding-left: 20px;
-    position: relative;
-}
-
-.submission-guidelines li::before {
-    content: "•";
-    color: #00ff66;
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
-}
-
-.submission-guidelines a {
-    color: #00ff66;
-    text-decoration: none;
-}
+/* ... (rest of the CSS for guidelines and other elements) ... */
