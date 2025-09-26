@@ -49,13 +49,13 @@
 
         <section id="list-page" class="page hidden list-layout">
             <div id="level-list-sidebar" class="sidebar">
-            </div>
+                </div>
 
             <div id="level-details-container" class="level-details">
-            </div>
+                </div>
 
             <div id="level-victors-list" class="sidebar victors-sidebar">
-            </div>
+                </div>
         </section>
 
         <section id="leaderboard-page" class="page hidden">
@@ -84,15 +84,15 @@
                     <p class="submission-queue">There are currently 0 submissions in the queue.</p>
                 </div>
                 
-             <form class="submission-form" 
-    action="https://docs.google.com/forms/d/e/1FAIpQLSdeJ6mK0lTDy6IJzEH-JYDa_TZVe9bKHw_F4nae0fLmTmyJxw/formResponse" 
-    method="POST" 
-    target="hidden_iframe"
-    onsubmit="submitted=true;">
-                  
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
-    onload="if(submitted) {alert('Record submitted successfully and sent for review!'); submitted=false; document.querySelector('.submission-form').reset();}">
-</iframe>
+                <form class="submission-form" 
+                    action="https://docs.google.com/forms/d/e/1FAIpQLSdeJ6mK0lTDy6IJzEH-JYDa_TZVe9bKHw_F4nae0fLmTmyJxw/formResponse" 
+                    method="POST" 
+                    target="hidden_iframe"
+                    onsubmit="submitted=true;">
+                    
+                    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
+                        onload="if(submitted) {alert('Record submitted successfully and sent for review!'); submitted=false; document.querySelector('.submission-form').reset();}">
+                    </iframe>
                     
                     <div class="form-row">
                         <label for="submit-level-select">Level: <span class="required-asterisk">*</span></label>
@@ -125,7 +125,7 @@
                     </div>
 
                     <div class="form-row" id="raw-footage-row">
-                        <label for="raw-footage">Raw Footage (Optional):</label>
+                        <label for="raw-footage">Raw Footage (Optional):</label> 
                         <input type="url" id="raw-footage" name="entry.122849927" placeholder="Link to your raw footage (Drive/Dropbox/etc.)">
                     </div>
 
@@ -192,8 +192,10 @@
         var submitted = false;
         
         // This sets a flag when the form is about to be sent.
+        // NOTE: This is redundant now because of the onsubmit="submitted=true;" in the form tag, 
+        // but it doesn't hurt to leave it in or remove it. The form attribute is the critical fix.
         document.querySelector('.submission-form').addEventListener('submit', function() {
-            submitted = true;
+            // submitted = true; // This line is now handled by the HTML form attribute
         });
 
         // Simple page-switching logic for a static site
@@ -215,6 +217,7 @@
                     renderLeaderboard(1);
                 }
             }
+            // IMPORTANT: The script.js now handles the list/submit setup calls on page change
         }
 
         function scrollToTop() {
