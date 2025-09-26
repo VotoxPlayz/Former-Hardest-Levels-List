@@ -5,8 +5,6 @@ let processedLevels = [];
 
 /**
  * Processes the raw LEVEL_DATA, calculates rank, and merges victors.
- * NOTE: The 'fhllPoints' field is assumed to be calculated dynamically 
- * or added by a separate function not defined here.
  */
 function processLevelData() {
     if (typeof LEVEL_DATA !== 'undefined' && Array.isArray(LEVEL_DATA)) {
@@ -38,34 +36,32 @@ function processLevelData() {
  * Sets up the submission page: populates the level dropdown and adds event listeners.
  */
 function setupSubmitPage() {
-    // Make sure this ID matches the <select> element on your submission form
+    // ID of the <select> element on your submission form (e.g., image_17a3a6.png)
     const levelSelect = document.getElementById('submit-level-select'); 
     const rawFootageInput = document.getElementById('raw-footage-input'); 
     
-    // CRITICAL CHECK: If the elements aren't found, the function stops.
-    if (!levelSelect || !rawFootageInput) {
-        // This is a good place to console.log an error if you're debugging
-        // console.error("Submission page elements not found. Check HTML IDs.");
-        return;
-    }
+    // Safety check to ensure we only proceed if the elements exist
+    if (!levelSelect) return;
 
-    // Clear existing options, but keep the first 'Select a Level' option if it exists
+    // Clear existing options, but keep the first 'Select a Level' option
+    // NOTE: This assumes 'Select a Level' is the first option already in your HTML.
     while (levelSelect.options.length > 1) {
         levelSelect.remove(1); 
     }
     
-    // Ensure 'Select a Level' is the first option and selected
-    if (levelSelect.options.length === 0) {
+    // If the default option was removed (e.g. if the HTML was empty), re-add it
+    if (levelSelect.options.length === 0 || levelSelect.options[0].value !== "") {
         const defaultOption = document.createElement('option');
         defaultOption.value = "";
         defaultOption.textContent = "Select a Level";
         defaultOption.setAttribute('disabled', 'true');
         defaultOption.setAttribute('selected', 'true');
-        levelSelect.appendChild(defaultOption);
+        levelSelect.prepend(defaultOption); // Ensure it's the first option
+        levelSelect.selectedIndex = 0; // Make sure the default is selected
     }
 
 
-    // Populate the dropdown using the processedLevels data
+    // Populate the dropdown with levels from your data
     processedLevels.forEach(level => {
         const option = document.createElement('option');
         option.value = level.name;
@@ -74,15 +70,15 @@ function setupSubmitPage() {
         levelSelect.appendChild(option);
     });
     
-    // Add event listener for the Raw Footage field logic (Top 15 required)
-    levelSelect.removeEventListener('change', handleLevelChange);
-    levelSelect.addEventListener('change', handleLevelChange);
-
-    // Initialize state
-    handleLevelChange(); 
+    // Setup for Raw Footage logic (only if the inputs exist)
+    if (rawFootageInput) {
+        levelSelect.removeEventListener('change', handleLevelChange);
+        levelSelect.addEventListener('change', handleLevelChange);
+        handleLevelChange(); 
+    }
 }
 
-// Handler function for level select change
+// Handler function for level select change (Raw Footage Logic)
 function handleLevelChange() {
     const levelSelect = document.getElementById('submit-level-select');
     const rawFootageInput = document.getElementById('raw-footage-input');
@@ -91,10 +87,9 @@ function handleLevelChange() {
     if (!levelSelect || !rawFootageInput || !rawFootageLabel) return;
     
     const selectedOption = levelSelect.options[levelSelect.selectedIndex];
-    // Check if an option is actually selected and has a data-rank attribute
+    // Use 0 if no level is selected or rank attribute is missing
     const rank = selectedOption ? (parseInt(selectedOption.dataset.rank, 10) || 0) : 0;
     
-    // Logic: Raw footage is mandatory for Top 15 (rank 1 to 15)
     if (rank > 0 && rank <= 15) {
         rawFootageInput.setAttribute('required', 'true');
         rawFootageLabel.innerHTML = 'Raw Footage <span style="color:red;">(Required for Top 15):</span>';
@@ -305,18 +300,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function changePage(pageId) {
+    // Hide all pages
     document.querySelectorAll('.page').forEach(page => {
         page.classList.add('hidden');
         page.classList.remove('active');
     });
     
+    // Show the target page
     const targetPage = document.getElementById(pageId + '-page');
     if (targetPage) {
         targetPage.classList.remove('hidden');
         targetPage.classList.add('active');
     }
     
-    // Call page-specific setup functions when needed
+    // CRITICAL: Call page-specific setup functions every time the page loads/changes
     if (pageId === 'submit') {
         setupSubmitPage();
     } else if (pageId === 'list') {
