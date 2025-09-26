@@ -89,9 +89,10 @@
     method="POST" 
     target="hidden_iframe"
     onsubmit="submitted=true;">
-
-                    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
-                        onload="if(submitted) {alert('Record submitted successfully and sent for review!'); submitted=false; document.querySelector('.submission-form').reset();}"></iframe>
+                  
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
+    onload="if(submitted) {alert('Record submitted successfully and sent for review!'); submitted=false; document.querySelector('.submission-form').reset();}">
+</iframe>
                     
                     <div class="form-row">
                         <label for="submit-level-select">Level: <span class="required-asterisk">*</span></label>
