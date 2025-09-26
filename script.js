@@ -35,7 +35,7 @@ function processLevelData() {
  */
 function setupSubmitPage() {
     const levelSelect = document.getElementById('submit-level-select'); 
-    const rawFootageInput = document.getElementById('raw-footage-input'); 
+    const rawFootageInput = document.getElementById('raw-footage'); // Targeting the correct ID based on your HTML
     
     if (!levelSelect) return;
 
@@ -48,7 +48,6 @@ function setupSubmitPage() {
     processedLevels.forEach(level => {
         const option = document.createElement('option');
         // NOTE: The 'value' sent to Google Forms MUST match the option text in the Google Form! 
-        // We use level.name here as the value, and the full rank + name for display.
         option.value = level.name; 
         option.textContent = `#${level.rank} - ${level.name}`;
         option.dataset.rank = level.rank;
@@ -66,11 +65,9 @@ function setupSubmitPage() {
 // Handler function for level select change (Raw Footage Logic)
 function handleLevelChange() {
     const levelSelect = document.getElementById('submit-level-select');
-    // Ensure you use the ID of the Raw Footage input in your HTML: it should be 'raw-footage'
     const rawFootageInput = document.getElementById('raw-footage'); 
-    const rawFootageLabel = document.querySelector('label[for="raw-footage"]'); // Targeting the correct label
+    const rawFootageLabel = document.querySelector('label[for="raw-footage"]'); 
     
-    // Fallback if elements are missing
     if (!levelSelect || !rawFootageInput || !rawFootageLabel) return;
     
     const selectedOption = levelSelect.options[levelSelect.selectedIndex];
@@ -95,9 +92,9 @@ function renderLevelList() {
     const detailsContainer = document.getElementById('level-details-container');
     const victorsSidebar = document.getElementById('level-victors-list');
 
-    // Check if the HTML containers exist for the list page!
+    // CRITICAL: Exit if any container is missing (This is likely why your list page is blank)
     if (!sidebar || !detailsContainer || !victorsSidebar) {
-        console.error("List Page Containers are missing from HTML (IDs: level-list-sidebar, level-details-container, level-victors-list)");
+        console.warn("List Page Containers are missing from HTML. Ensure you have elements with IDs: level-list-sidebar, level-details-container, and level-victors-list.");
         return;
     }
 
