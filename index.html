@@ -90,12 +90,12 @@
                     target="hidden_iframe"> 
 
                     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
-                        onload="if(submitted) {alert('Record submitted successfully and sent for review!'); submitted=false;}"></iframe>
+                        onload="if(submitted) {alert('Record submitted successfully and sent for review!'); submitted=false; document.querySelector('.submission-form').reset();}"></iframe>
                     
                     <div class="form-row">
                         <label for="submit-level-select">Level: <span class="required-asterisk">*</span></label>
                         <select id="submit-level-select" name="entry.1706240294" required>
-                            <option value="">Select a Level</option>
+                            <option value="">Select a Level</option> 
                         </select>
                     </div>
                     
@@ -189,7 +189,7 @@
     <script>
         var submitted = false;
         
-        // This makes sure the alert pops up after the form has been sent.
+        // This sets a flag when the form is about to be sent.
         document.querySelector('.submission-form').addEventListener('submit', function() {
             submitted = true;
         });
