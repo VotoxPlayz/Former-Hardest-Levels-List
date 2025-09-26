@@ -52,8 +52,6 @@
             </div>
 
             <div id="level-details-container" class="level-details">
-                <h1>THE LIST</h1>
-                <p>Click a level on the left to view its details!</p>
             </div>
 
             <div id="level-victors-list" class="sidebar victors-sidebar">
@@ -69,7 +67,6 @@
                         <th>Username</th>
                         <th>Total Points</th>
                         <th>Hardest Level</th>
-                        <th>Levels Beaten</th>
                     </tr>
                 </thead>
                 <tbody id="leaderboard-body">
@@ -105,17 +102,22 @@
                         <label for="username">Username: <span class="required-asterisk">*</span></label>
                         <input type="text" id="username" name="entry.45681910" placeholder="Your Username" required>
                     </div>
-                    
+
                                         <div class="form-row">
                         <label for="completion-link">Completion Link: <span class="required-asterisk">*</span></label>
                         <input type="url" id="completion-link" name="entry.45658679" placeholder="Video link to your completion" required>
                     </div>
 
                                                             <div class="form-row" id="raw-footage-row">
-                        <label for="raw-footage">Raw Footage (Top 15 Only):</label>
+                        <label for="raw-footage">Raw Footage (Required for Top 15):</label>
                         <input type="url" id="raw-footage" name="entry.45672202" placeholder="Link to your raw footage (Drive/Dropbox/etc.)">
                     </div>
-                    
+
+                                        <div class="form-row">
+                        <label for="level-id">Level ID (Optional):</label>
+                        <input type="text" id="level-id" name="entry.440263640" placeholder="ID of the LDM/Bugfix if used">
+                    </div>
+
                                         <div class="form-row">
                         <label for="device">Device: <span class="required-asterisk">*</span></label>
                         <select id="device" name="entry.1691349890" required>
@@ -124,10 +126,6 @@
                         </select>
                     </div>
 
-                                        <div class="form-row">
-                        <label for="level-id">Level ID (Optional):</label>
-                        <input type="text" id="level-id" name="entry.440263640" placeholder="ID of the LDM/Bugfix if used">
-                    </div>
 
                                         <div class="form-row">
                         <label for="best-run">Best Run Percentage (0-100):</label>
