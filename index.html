@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FHLL - Former Hardest Levels List</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
 
@@ -188,8 +188,7 @@
     <script>
         var submitted = false;
         
-        // This sets a flag when the form is about to be sent.
-        document.querySelector('.submission-form').addEventListener('submit', function() {
+        document.querySelector('.submission-form')?.addEventListener('submit', function() {
             submitted = true;
         });
 
