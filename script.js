@@ -1,7 +1,8 @@
 // script.js
 
-// Global variable to hold the processed, sorted level data
-let processedLevels = []; let submitted = false; // Flag to track form submission status
+// Global variables
+let processedLevels = []; 
+let submitted = false; // Flag to track form submission status for Google Forms confirmation
 
 /**
  * Processes the raw LEVEL_DATA, calculates rank, and merges victors.
@@ -10,12 +11,9 @@ function processLevelData() {
     if (typeof LEVEL_DATA !== 'undefined' && Array.isArray(LEVEL_DATA)) {
         processedLevels = LEVEL_DATA.map((level, index) => {
             const rank = index + 1;
-
-            // 1. Assign Rank.
-            // 2. Assign a default fhllPoints field if it doesn't exist.
             const fhllPoints = level.fhllPoints || 0; 
             
-            // 3. Merge Victors from VICTOR_COMPLETIONS
+            // Merge Victors from VICTOR_COMPLETIONS
             const victors = (typeof VICTOR_COMPLETIONS !== 'undefined' && Array.isArray(VICTOR_COMPLETIONS))
                 ? VICTOR_COMPLETIONS.filter(victor => victor.levelName === level.name)
                 : [];
@@ -36,41 +34,28 @@ function processLevelData() {
  * Sets up the submission page: populates the level dropdown and adds event listeners.
  */
 function setupSubmitPage() {
-    // ID of the <select> element on your submission form (e.g., image_17a3a6.png)
     const levelSelect = document.getElementById('submit-level-select'); 
     const rawFootageInput = document.getElementById('raw-footage-input'); 
     
-    // Safety check to ensure we only proceed if the elements exist
     if (!levelSelect) return;
 
-    // Clear existing options, but keep the first 'Select a Level' option
-    // NOTE: This assumes 'Select a Level' is the first option already in your HTML.
-    while (levelSelect.options.length > 1) {
-        levelSelect.remove(1); 
-    }
-    
-    // If the default option was removed (e.g. if the HTML was empty), re-add it
-    if (levelSelect.options.length === 0 || levelSelect.options[0].value !== "") {
-        const defaultOption = document.createElement('option');
-        defaultOption.value = "";
-        defaultOption.textContent = "Select a Level";
-        defaultOption.setAttribute('disabled', 'true');
-        defaultOption.setAttribute('selected', 'true');
-        levelSelect.prepend(defaultOption); // Ensure it's the first option
-        levelSelect.selectedIndex = 0; // Make sure the default is selected
+    // 1. Clear existing options inserted by JS (keep the first option if it has no value)
+    for (let i = levelSelect.options.length - 1; i > 0; i--) {
+        levelSelect.remove(i);
     }
 
-
-    // Populate the dropdown with levels from your data
+    // 2. Populate the dropdown with levels from your data
     processedLevels.forEach(level => {
         const option = document.createElement('option');
-        option.value = level.name;
+        // NOTE: The 'value' sent to Google Forms MUST match the option text in the Google Form! 
+        // We use level.name here as the value, and the full rank + name for display.
+        option.value = level.name; 
         option.textContent = `#${level.rank} - ${level.name}`;
         option.dataset.rank = level.rank;
         levelSelect.appendChild(option);
     });
     
-    // Setup for Raw Footage logic (only if the inputs exist)
+    // 3. Setup Raw Footage logic 
     if (rawFootageInput) {
         levelSelect.removeEventListener('change', handleLevelChange);
         levelSelect.addEventListener('change', handleLevelChange);
@@ -81,15 +66,17 @@ function setupSubmitPage() {
 // Handler function for level select change (Raw Footage Logic)
 function handleLevelChange() {
     const levelSelect = document.getElementById('submit-level-select');
-    const rawFootageInput = document.getElementById('raw-footage-input');
-    const rawFootageLabel = document.querySelector('label[for="raw-footage-input"]');
+    // Ensure you use the ID of the Raw Footage input in your HTML: it should be 'raw-footage'
+    const rawFootageInput = document.getElementById('raw-footage'); 
+    const rawFootageLabel = document.querySelector('label[for="raw-footage"]'); // Targeting the correct label
     
+    // Fallback if elements are missing
     if (!levelSelect || !rawFootageInput || !rawFootageLabel) return;
     
     const selectedOption = levelSelect.options[levelSelect.selectedIndex];
-    // Use 0 if no level is selected or rank attribute is missing
     const rank = selectedOption ? (parseInt(selectedOption.dataset.rank, 10) || 0) : 0;
     
+    // Logic: Raw footage is mandatory for Top 15 (rank 1 to 15)
     if (rank > 0 && rank <= 15) {
         rawFootageInput.setAttribute('required', 'true');
         rawFootageLabel.innerHTML = 'Raw Footage <span style="color:red;">(Required for Top 15):</span>';
@@ -108,14 +95,18 @@ function renderLevelList() {
     const detailsContainer = document.getElementById('level-details-container');
     const victorsSidebar = document.getElementById('level-victors-list');
 
-    if (!sidebar) return;
+    // Check if the HTML containers exist for the list page!
+    if (!sidebar || !detailsContainer || !victorsSidebar) {
+        console.error("List Page Containers are missing from HTML (IDs: level-list-sidebar, level-details-container, level-victors-list)");
+        return;
+    }
 
     sidebar.innerHTML = '<h3>FHLL Levels</h3>';
     detailsContainer.innerHTML = '';
     victorsSidebar.innerHTML = '';
     
     if (processedLevels.length === 0) {
-        sidebar.innerHTML += '<p>No levels loaded from data.js.</p>';
+        sidebar.innerHTML += '<p>No levels loaded from data.js. Check your console for errors.</p>';
         return;
     }
 
